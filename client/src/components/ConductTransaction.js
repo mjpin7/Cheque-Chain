@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import history from '../history';
 
 class ConductTransaction extends Component {
-  state = { recipient: '', amount: 0, knownAddresses: [] };
+  state = { chequeID: '', transNum: '', id = '', accountID: '', clientName: '',  knownAddresses: [] };
 
   componentDidMount() {
     fetch(`${document.location.origin}/api/known-addresses`)
@@ -12,21 +12,33 @@ class ConductTransaction extends Component {
       .then(json => this.setState({ knownAddresses: json }));
   }
 
-  updateRecipient = event => {
-    this.setState({ recipient: event.target.value });
+  updatechequeID = event => {
+    this.setState({ chequeID: event.target.value });
   }
 
-  updateAmount = event => {
-    this.setState({ amount: Number(event.target.value) });
+  updatetransNum = event => {
+    this.setState({ transNum: event.target.value });
+  }
+
+  updateid = event => {
+    this.setState({id: event.target.value });
+  }
+
+  updateaccountID = event => {
+    this.setState({ accountID: event.target.value });
+  }
+
+  updateclientName = event => {
+    this.setState({ clientName: event.target.value });
   }
 
   conductTransaction = () => {
-    const { recipient, amount } = this.state;
+    const {chequeID,transNum,id,accountID,clientName} = this.state;
 
     fetch(`${document.location.origin}/api/transact`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ recipient, amount })
+      body: JSON.stringify({chequeID,transNum,id,accountID,clientName})
     }).then(response => response.json())
       .then(json => {
         alert(json.message || json.type);
@@ -35,12 +47,13 @@ class ConductTransaction extends Component {
   }
 
   render() {
+    console.log('this.state', this.state);
     return (
       <div className='ConductTransaction'>
         <Link to='/'>Home</Link>
         <h3>Conduct a Transaction</h3>
         <br />
-        <h4>Known Addresses</h4>
+        <h4>Cheque Information</h4>
         {
           this.state.knownAddresses.map(knownAddress => {
             return (
@@ -55,17 +68,41 @@ class ConductTransaction extends Component {
         <FormGroup>
           <FormControl
             input='text'
-            placeholder='recipient'
-            value={this.state.recipient}
-            onChange={this.updateRecipient}
+            placeholder='chequeID'
+            value={this.state.chequeID}
+            onChange={this.updatechequeID}
           />
         </FormGroup>
         <FormGroup>
           <FormControl
-            input='number'
-            placeholder='amount'
-            value={this.state.amount}
-            onChange={this.updateAmount}
+          input='text'
+          placeholder='transNum'
+          value={this.state.transNum}
+          onChange={this.updatetransNum}
+          />
+        </FormGroup>
+        <FormGroup>
+          <FormControl
+          input='text'
+          placeholder='id'
+          value={this.state.id}
+          onChange={this.updateid}
+          />
+        </FormGroup>
+        <FormGroup>
+          <FormControl
+          input='text'
+          placeholder='accountID'
+          value={this.state.accountID}
+          onChange={this.updateaccountID}
+          />
+        </FormGroup>
+        <FormGroup>
+          <FormControl
+          input='text'
+          placeholder='clientName'
+          value={this.state.clientName}
+          onChange={this.updateclientName}
           />
         </FormGroup>
         <div>
