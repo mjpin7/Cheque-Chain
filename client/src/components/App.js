@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 
 class App extends Component {
-  state = { walletInfo: { address: 'foo' , balance : 50} };
+  state = { walletInfo: {} };
 
   componentDidMount() {
-    fetch('http://localhost:1234/api/wallet-info')
+    fetch(`${document.location.origin}/api/wallet-info`)
       .then(response => response.json())
       .then(json => this.setState({ walletInfo: json }));
   }
