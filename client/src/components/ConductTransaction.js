@@ -4,16 +4,24 @@ import { Link } from 'react-router-dom';
 import history from '../history';
 
 class ConductTransaction extends Component {
-  state = { recipient: '', amount: 0, knownAddresses: [] };
+  state = { finInstNum: '', tranNum: '', accountId: '' , amount: 0};
 
   componentDidMount() {
-    fetch(`${document.location.origin}/api/known-addresses`)
-      .then(response => response.json())
-      .then(json => this.setState({ knownAddresses: json }));
+    // fetch(`${document.location.origin}/api/known-addresses`)
+    //   .then(response => response.json())
+    //   .then(json => this.setState({ knownAddresses: json }));
   }
 
-  updateRecipient = event => {
-    this.setState({ recipient: event.target.value });
+  updateFinInstNum = event => {
+    this.setState({ finInstNum: event.target.value });
+  }
+
+  updateTranNum = event => {
+    this.setState({ tranNum: event.target.value });
+  }
+
+  updateAccountId = event => {
+    this.setState({ accountId: event.target.value });
   }
 
   updateAmount = event => {
@@ -21,16 +29,28 @@ class ConductTransaction extends Component {
   }
 
   conductTransaction = () => {
-    const { recipient, amount } = this.state;
+    const { finInstNum, tranNum, accountId, amount } = this.state;
 
-    fetch(`${document.location.origin}/api/transact`, {
+    fetch('http://3.12.159.16:3000', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ recipient, amount })
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify({ amount, finInstNum, tranNum, accountId })
     }).then(response => response.json())
-      .then(json => {
-        alert(json.message || json.type);
-        history.push('/transaction-pool');
+      .then(resp => {
+        if (resp.amountvalid == true && resp.accountvalid == true) {
+          alert("Transaction cleared")
+        }
+        else {
+          if(resp.accountvalid == false) {
+            alert("Account not valid");
+          }
+          else if(resp.amountvalid == false) {
+            alert("Non sufficient funds");
+          }
+        }
+        // history.push('/transaction-pool');
+      }).catch((error) => {
+        console.log(error)
       });
   }
 
@@ -40,24 +60,28 @@ class ConductTransaction extends Component {
         <Link to='/'>Home</Link>
         <h3>Conduct a Transaction</h3>
         <br />
-        <h4>Known Addresses</h4>
-        {
-          this.state.knownAddresses.map(knownAddress => {
-            return (
-              <div key={knownAddress}>
-                <div>{knownAddress}</div>
-                <br />
-              </div>
-            );
-          })
-        }
-        <br />
         <FormGroup>
           <FormControl
             input='text'
-            placeholder='recipient'
-            value={this.state.recipient}
-            onChange={this.updateRecipient}
+            placeholder='financial institution number'
+            value={this.state.finInstNum}
+            onChange={this.updateFinInstNum}
+          />
+        </FormGroup>
+        <FormGroup>
+          <FormControl
+            input='text'
+            placeholder='transit number'
+            value={this.state.tranNum}
+            onChange={this.updateTranNum}
+          />
+        </FormGroup>
+        <FormGroup>
+          <FormControl
+            input='text'
+            placeholder='account id'
+            value={this.state.accountId}
+            onChange={this.updateAccountId}
           />
         </FormGroup>
         <FormGroup>
