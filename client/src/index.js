@@ -8,6 +8,7 @@ import ConductTransaction from './components/ConductTransaction';
 import TransactionPool from './components/TransactionPool';
 import './index.css';
 
+
 render(
   <Router history={history}>
     <Switch>

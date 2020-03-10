@@ -31739,10 +31739,10 @@ var warning = function () {};
 if (__DEV__) {
   var printWarning = function printWarning(format, args) {
     var len = arguments.length;
-    args = new Array(len > 2 ? len - 2 : 0);
+    args = new Array(len > 1 ? len - 1 : 0);
 
-    for (var key = 2; key < len; key++) {
-      args[key - 2] = arguments[key];
+    for (var key = 1; key < len; key++) {
+      args[key - 1] = arguments[key];
     }
 
     var argIndex = 0;
@@ -32590,9 +32590,9 @@ function invariant(condition, message) {
 
   if (isProduction) {
     throw new Error(prefix);
-  } else {
-    throw new Error(prefix + ": " + (message || ''));
   }
+
+  throw new Error(prefix + ": " + (message || ''));
 }
 
 var _default = invariant;
@@ -33565,10 +33565,10 @@ var warning = function () {};
 if (__DEV__) {
   var printWarning = function printWarning(format, args) {
     var len = arguments.length;
-    args = new Array(len > 2 ? len - 2 : 0);
+    args = new Array(len > 1 ? len - 1 : 0);
 
-    for (var key = 2; key < len; key++) {
-      args[key - 2] = arguments[key];
+    for (var key = 1; key < len; key++) {
+      args[key - 1] = arguments[key];
     }
 
     var argIndex = 0;
@@ -34381,7 +34381,7 @@ function parse (str, options) {
  * @return {!function(Object=, Object=)}
  */
 function compile (str, options) {
-  return tokensToFunction(parse(str, options))
+  return tokensToFunction(parse(str, options), options)
 }
 
 /**
@@ -34411,14 +34411,14 @@ function encodeAsterisk (str) {
 /**
  * Expose a method for transforming tokens into the path function.
  */
-function tokensToFunction (tokens) {
+function tokensToFunction (tokens, options) {
   // Compile all the tokens into regexps.
   var matches = new Array(tokens.length)
 
   // Compile all the patterns before compilation.
   for (var i = 0; i < tokens.length; i++) {
     if (typeof tokens[i] === 'object') {
-      matches[i] = new RegExp('^(?:' + tokens[i].pattern + ')$')
+      matches[i] = new RegExp('^(?:' + tokens[i].pattern + ')$', flags(options))
     }
   }
 
@@ -34531,7 +34531,7 @@ function attachKeys (re, keys) {
  * @return {string}
  */
 function flags (options) {
-  return options.sensitive ? '' : 'i'
+  return options && options.sensitive ? '' : 'i'
 }
 
 /**
@@ -37108,114 +37108,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var _default = (0, _createBrowserHistory.default)();
 
 exports.default = _default;
-},{"history/createBrowserHistory":"../../node_modules/history/createBrowserHistory.js"}],"assets/logo.png":[function(require,module,exports) {
-module.exports = "/logo.e9a9c890.png";
-},{}],"components/App.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-var _reactRouterDom = require("react-router-dom");
-
-var _logo = _interopRequireDefault(require("../assets/logo.png"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-var App =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(App, _Component);
-
-  function App() {
-    var _getPrototypeOf2;
-
-    var _this;
-
-    var _temp;
-
-    _classCallCheck(this, App);
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(App)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.state = {
-      walletInfo: {
-        address: 'foo',
-        balance: 50
-      }
-    }, _temp));
-  }
-
-  _createClass(App, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      fetch('http://localhost:1234/api/wallet-info').then(function (response) {
-        return response.json();
-      }).then(function (json) {
-        return _this2.setState({
-          walletInfo: json
-        });
-      });
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this$state$walletInf = this.state.walletInfo,
-          address = _this$state$walletInf.address,
-          balance = _this$state$walletInf.balance;
-      return _react.default.createElement("div", {
-        className: "App"
-      }, _react.default.createElement("img", {
-        className: "logo",
-        src: _logo.default
-      }), _react.default.createElement("br", null), _react.default.createElement("div", null, "Welcome to the blockchain..."), _react.default.createElement("br", null), _react.default.createElement("div", null, _react.default.createElement(_reactRouterDom.Link, {
-        to: "/blocks"
-      }, "Blocks")), _react.default.createElement("div", null, _react.default.createElement(_reactRouterDom.Link, {
-        to: "/conduct-transaction"
-      }, "Conduct a Transaction")), _react.default.createElement("div", null, _react.default.createElement(_reactRouterDom.Link, {
-        to: "/transaction-pool"
-      }, "Transaction Pool")), _react.default.createElement("br", null), _react.default.createElement("div", {
-        className: "WalletInfo"
-      }, _react.default.createElement("div", null, "Address: ", address), _react.default.createElement("div", null, "Balance: ", balance)));
-    }
-  }]);
-
-  return App;
-}(_react.Component);
-
-var _default = App;
-exports.default = _default;
-},{"react":"../../node_modules/react/index.js","react-router-dom":"../../node_modules/react-router-dom/es/index.js","../assets/logo.png":"assets/logo.png"}],"../../node_modules/core-js/library/modules/_global.js":[function(require,module,exports) {
+},{"history/createBrowserHistory":"../../node_modules/history/createBrowserHistory.js"}],"assets/logo.jpg":[function(require,module,exports) {
+module.exports = "/logo.ed8fc6de.jpg";
+},{}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_global.js":[function(require,module,exports) {
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
@@ -37224,17 +37119,17 @@ var global = module.exports = typeof window != 'undefined' && window.Math == Mat
   : Function('return this')();
 if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
-},{}],"../../node_modules/core-js/library/modules/_core.js":[function(require,module,exports) {
-var core = module.exports = { version: '2.5.7' };
+},{}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_core.js":[function(require,module,exports) {
+var core = module.exports = { version: '2.6.11' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
-},{}],"../../node_modules/core-js/library/modules/_a-function.js":[function(require,module,exports) {
+},{}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_a-function.js":[function(require,module,exports) {
 module.exports = function (it) {
   if (typeof it != 'function') throw TypeError(it + ' is not a function!');
   return it;
 };
 
-},{}],"../../node_modules/core-js/library/modules/_ctx.js":[function(require,module,exports) {
+},{}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_ctx.js":[function(require,module,exports) {
 // optional / simple context binding
 var aFunction = require('./_a-function');
 module.exports = function (fn, that, length) {
@@ -37256,19 +37151,19 @@ module.exports = function (fn, that, length) {
   };
 };
 
-},{"./_a-function":"../../node_modules/core-js/library/modules/_a-function.js"}],"../../node_modules/core-js/library/modules/_is-object.js":[function(require,module,exports) {
+},{"./_a-function":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_a-function.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_is-object.js":[function(require,module,exports) {
 module.exports = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
 
-},{}],"../../node_modules/core-js/library/modules/_an-object.js":[function(require,module,exports) {
+},{}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_an-object.js":[function(require,module,exports) {
 var isObject = require('./_is-object');
 module.exports = function (it) {
   if (!isObject(it)) throw TypeError(it + ' is not an object!');
   return it;
 };
 
-},{"./_is-object":"../../node_modules/core-js/library/modules/_is-object.js"}],"../../node_modules/core-js/library/modules/_fails.js":[function(require,module,exports) {
+},{"./_is-object":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_is-object.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_fails.js":[function(require,module,exports) {
 module.exports = function (exec) {
   try {
     return !!exec();
@@ -37277,13 +37172,13 @@ module.exports = function (exec) {
   }
 };
 
-},{}],"../../node_modules/core-js/library/modules/_descriptors.js":[function(require,module,exports) {
+},{}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_descriptors.js":[function(require,module,exports) {
 // Thank's IE8 for his funny defineProperty
 module.exports = !require('./_fails')(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
 
-},{"./_fails":"../../node_modules/core-js/library/modules/_fails.js"}],"../../node_modules/core-js/library/modules/_dom-create.js":[function(require,module,exports) {
+},{"./_fails":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_fails.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_dom-create.js":[function(require,module,exports) {
 var isObject = require('./_is-object');
 var document = require('./_global').document;
 // typeof document.createElement is 'object' in old IE
@@ -37292,12 +37187,12 @@ module.exports = function (it) {
   return is ? document.createElement(it) : {};
 };
 
-},{"./_is-object":"../../node_modules/core-js/library/modules/_is-object.js","./_global":"../../node_modules/core-js/library/modules/_global.js"}],"../../node_modules/core-js/library/modules/_ie8-dom-define.js":[function(require,module,exports) {
+},{"./_is-object":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_is-object.js","./_global":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_global.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_ie8-dom-define.js":[function(require,module,exports) {
 module.exports = !require('./_descriptors') && !require('./_fails')(function () {
   return Object.defineProperty(require('./_dom-create')('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
-},{"./_descriptors":"../../node_modules/core-js/library/modules/_descriptors.js","./_fails":"../../node_modules/core-js/library/modules/_fails.js","./_dom-create":"../../node_modules/core-js/library/modules/_dom-create.js"}],"../../node_modules/core-js/library/modules/_to-primitive.js":[function(require,module,exports) {
+},{"./_descriptors":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_descriptors.js","./_fails":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_fails.js","./_dom-create":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_dom-create.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-primitive.js":[function(require,module,exports) {
 // 7.1.1 ToPrimitive(input [, PreferredType])
 var isObject = require('./_is-object');
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
@@ -37311,7 +37206,7 @@ module.exports = function (it, S) {
   throw TypeError("Can't convert object to primitive value");
 };
 
-},{"./_is-object":"../../node_modules/core-js/library/modules/_is-object.js"}],"../../node_modules/core-js/library/modules/_object-dp.js":[function(require,module,exports) {
+},{"./_is-object":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_is-object.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-dp.js":[function(require,module,exports) {
 var anObject = require('./_an-object');
 var IE8_DOM_DEFINE = require('./_ie8-dom-define');
 var toPrimitive = require('./_to-primitive');
@@ -37329,7 +37224,7 @@ exports.f = require('./_descriptors') ? Object.defineProperty : function defineP
   return O;
 };
 
-},{"./_an-object":"../../node_modules/core-js/library/modules/_an-object.js","./_ie8-dom-define":"../../node_modules/core-js/library/modules/_ie8-dom-define.js","./_to-primitive":"../../node_modules/core-js/library/modules/_to-primitive.js","./_descriptors":"../../node_modules/core-js/library/modules/_descriptors.js"}],"../../node_modules/core-js/library/modules/_property-desc.js":[function(require,module,exports) {
+},{"./_an-object":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_an-object.js","./_ie8-dom-define":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_ie8-dom-define.js","./_to-primitive":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-primitive.js","./_descriptors":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_descriptors.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_property-desc.js":[function(require,module,exports) {
 module.exports = function (bitmap, value) {
   return {
     enumerable: !(bitmap & 1),
@@ -37339,7 +37234,7 @@ module.exports = function (bitmap, value) {
   };
 };
 
-},{}],"../../node_modules/core-js/library/modules/_hide.js":[function(require,module,exports) {
+},{}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_hide.js":[function(require,module,exports) {
 var dP = require('./_object-dp');
 var createDesc = require('./_property-desc');
 module.exports = require('./_descriptors') ? function (object, key, value) {
@@ -37349,13 +37244,13 @@ module.exports = require('./_descriptors') ? function (object, key, value) {
   return object;
 };
 
-},{"./_object-dp":"../../node_modules/core-js/library/modules/_object-dp.js","./_property-desc":"../../node_modules/core-js/library/modules/_property-desc.js","./_descriptors":"../../node_modules/core-js/library/modules/_descriptors.js"}],"../../node_modules/core-js/library/modules/_has.js":[function(require,module,exports) {
+},{"./_object-dp":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-dp.js","./_property-desc":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_property-desc.js","./_descriptors":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_descriptors.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_has.js":[function(require,module,exports) {
 var hasOwnProperty = {}.hasOwnProperty;
 module.exports = function (it, key) {
   return hasOwnProperty.call(it, key);
 };
 
-},{}],"../../node_modules/core-js/library/modules/_export.js":[function(require,module,exports) {
+},{}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_export.js":[function(require,module,exports) {
 
 var global = require('./_global');
 var core = require('./_core');
@@ -37420,14 +37315,14 @@ $export.U = 64;  // safe
 $export.R = 128; // real proto method for `library`
 module.exports = $export;
 
-},{"./_global":"../../node_modules/core-js/library/modules/_global.js","./_core":"../../node_modules/core-js/library/modules/_core.js","./_ctx":"../../node_modules/core-js/library/modules/_ctx.js","./_hide":"../../node_modules/core-js/library/modules/_hide.js","./_has":"../../node_modules/core-js/library/modules/_has.js"}],"../../node_modules/core-js/library/modules/_cof.js":[function(require,module,exports) {
+},{"./_global":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_global.js","./_core":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_core.js","./_ctx":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_ctx.js","./_hide":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_hide.js","./_has":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_has.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_cof.js":[function(require,module,exports) {
 var toString = {}.toString;
 
 module.exports = function (it) {
   return toString.call(it).slice(8, -1);
 };
 
-},{}],"../../node_modules/core-js/library/modules/_iobject.js":[function(require,module,exports) {
+},{}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_iobject.js":[function(require,module,exports) {
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
 var cof = require('./_cof');
 // eslint-disable-next-line no-prototype-builtins
@@ -37435,14 +37330,14 @@ module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
   return cof(it) == 'String' ? it.split('') : Object(it);
 };
 
-},{"./_cof":"../../node_modules/core-js/library/modules/_cof.js"}],"../../node_modules/core-js/library/modules/_defined.js":[function(require,module,exports) {
+},{"./_cof":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_cof.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_defined.js":[function(require,module,exports) {
 // 7.2.1 RequireObjectCoercible(argument)
 module.exports = function (it) {
   if (it == undefined) throw TypeError("Can't call method on  " + it);
   return it;
 };
 
-},{}],"../../node_modules/core-js/library/modules/_to-iobject.js":[function(require,module,exports) {
+},{}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-iobject.js":[function(require,module,exports) {
 // to indexed object, toObject with fallback for non-array-like ES3 strings
 var IObject = require('./_iobject');
 var defined = require('./_defined');
@@ -37450,7 +37345,7 @@ module.exports = function (it) {
   return IObject(defined(it));
 };
 
-},{"./_iobject":"../../node_modules/core-js/library/modules/_iobject.js","./_defined":"../../node_modules/core-js/library/modules/_defined.js"}],"../../node_modules/core-js/library/modules/_to-integer.js":[function(require,module,exports) {
+},{"./_iobject":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_iobject.js","./_defined":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_defined.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-integer.js":[function(require,module,exports) {
 // 7.1.4 ToInteger
 var ceil = Math.ceil;
 var floor = Math.floor;
@@ -37458,7 +37353,7 @@ module.exports = function (it) {
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
 
-},{}],"../../node_modules/core-js/library/modules/_to-length.js":[function(require,module,exports) {
+},{}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-length.js":[function(require,module,exports) {
 // 7.1.15 ToLength
 var toInteger = require('./_to-integer');
 var min = Math.min;
@@ -37466,7 +37361,7 @@ module.exports = function (it) {
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
 };
 
-},{"./_to-integer":"../../node_modules/core-js/library/modules/_to-integer.js"}],"../../node_modules/core-js/library/modules/_to-absolute-index.js":[function(require,module,exports) {
+},{"./_to-integer":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-integer.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-absolute-index.js":[function(require,module,exports) {
 var toInteger = require('./_to-integer');
 var max = Math.max;
 var min = Math.min;
@@ -37475,7 +37370,7 @@ module.exports = function (index, length) {
   return index < 0 ? max(index + length, 0) : min(index, length);
 };
 
-},{"./_to-integer":"../../node_modules/core-js/library/modules/_to-integer.js"}],"../../node_modules/core-js/library/modules/_array-includes.js":[function(require,module,exports) {
+},{"./_to-integer":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-integer.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_array-includes.js":[function(require,module,exports) {
 // false -> Array#indexOf
 // true  -> Array#includes
 var toIObject = require('./_to-iobject');
@@ -37500,10 +37395,10 @@ module.exports = function (IS_INCLUDES) {
   };
 };
 
-},{"./_to-iobject":"../../node_modules/core-js/library/modules/_to-iobject.js","./_to-length":"../../node_modules/core-js/library/modules/_to-length.js","./_to-absolute-index":"../../node_modules/core-js/library/modules/_to-absolute-index.js"}],"../../node_modules/core-js/library/modules/_library.js":[function(require,module,exports) {
+},{"./_to-iobject":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-iobject.js","./_to-length":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-length.js","./_to-absolute-index":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-absolute-index.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_library.js":[function(require,module,exports) {
 module.exports = true;
 
-},{}],"../../node_modules/core-js/library/modules/_shared.js":[function(require,module,exports) {
+},{}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_shared.js":[function(require,module,exports) {
 
 var core = require('./_core');
 var global = require('./_global');
@@ -37515,24 +37410,24 @@ var store = global[SHARED] || (global[SHARED] = {});
 })('versions', []).push({
   version: core.version,
   mode: require('./_library') ? 'pure' : 'global',
-  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
+  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
 });
 
-},{"./_core":"../../node_modules/core-js/library/modules/_core.js","./_global":"../../node_modules/core-js/library/modules/_global.js","./_library":"../../node_modules/core-js/library/modules/_library.js"}],"../../node_modules/core-js/library/modules/_uid.js":[function(require,module,exports) {
+},{"./_core":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_core.js","./_global":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_global.js","./_library":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_library.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_uid.js":[function(require,module,exports) {
 var id = 0;
 var px = Math.random();
 module.exports = function (key) {
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
 
-},{}],"../../node_modules/core-js/library/modules/_shared-key.js":[function(require,module,exports) {
+},{}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_shared-key.js":[function(require,module,exports) {
 var shared = require('./_shared')('keys');
 var uid = require('./_uid');
 module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
 };
 
-},{"./_shared":"../../node_modules/core-js/library/modules/_shared.js","./_uid":"../../node_modules/core-js/library/modules/_uid.js"}],"../../node_modules/core-js/library/modules/_object-keys-internal.js":[function(require,module,exports) {
+},{"./_shared":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_shared.js","./_uid":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_uid.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-keys-internal.js":[function(require,module,exports) {
 var has = require('./_has');
 var toIObject = require('./_to-iobject');
 var arrayIndexOf = require('./_array-includes')(false);
@@ -37551,13 +37446,13 @@ module.exports = function (object, names) {
   return result;
 };
 
-},{"./_has":"../../node_modules/core-js/library/modules/_has.js","./_to-iobject":"../../node_modules/core-js/library/modules/_to-iobject.js","./_array-includes":"../../node_modules/core-js/library/modules/_array-includes.js","./_shared-key":"../../node_modules/core-js/library/modules/_shared-key.js"}],"../../node_modules/core-js/library/modules/_enum-bug-keys.js":[function(require,module,exports) {
+},{"./_has":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_has.js","./_to-iobject":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-iobject.js","./_array-includes":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_array-includes.js","./_shared-key":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_shared-key.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_enum-bug-keys.js":[function(require,module,exports) {
 // IE 8- don't enum bug keys
 module.exports = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
 
-},{}],"../../node_modules/core-js/library/modules/_object-keys.js":[function(require,module,exports) {
+},{}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-keys.js":[function(require,module,exports) {
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
 var $keys = require('./_object-keys-internal');
 var enumBugKeys = require('./_enum-bug-keys');
@@ -37566,22 +37461,23 @@ module.exports = Object.keys || function keys(O) {
   return $keys(O, enumBugKeys);
 };
 
-},{"./_object-keys-internal":"../../node_modules/core-js/library/modules/_object-keys-internal.js","./_enum-bug-keys":"../../node_modules/core-js/library/modules/_enum-bug-keys.js"}],"../../node_modules/core-js/library/modules/_object-gops.js":[function(require,module,exports) {
+},{"./_object-keys-internal":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-keys-internal.js","./_enum-bug-keys":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_enum-bug-keys.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-gops.js":[function(require,module,exports) {
 exports.f = Object.getOwnPropertySymbols;
 
-},{}],"../../node_modules/core-js/library/modules/_object-pie.js":[function(require,module,exports) {
+},{}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-pie.js":[function(require,module,exports) {
 exports.f = {}.propertyIsEnumerable;
 
-},{}],"../../node_modules/core-js/library/modules/_to-object.js":[function(require,module,exports) {
+},{}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-object.js":[function(require,module,exports) {
 // 7.1.13 ToObject(argument)
 var defined = require('./_defined');
 module.exports = function (it) {
   return Object(defined(it));
 };
 
-},{"./_defined":"../../node_modules/core-js/library/modules/_defined.js"}],"../../node_modules/core-js/library/modules/_object-assign.js":[function(require,module,exports) {
+},{"./_defined":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_defined.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-assign.js":[function(require,module,exports) {
 'use strict';
 // 19.1.2.1 Object.assign(target, source, ...)
+var DESCRIPTORS = require('./_descriptors');
 var getKeys = require('./_object-keys');
 var gOPS = require('./_object-gops');
 var pIE = require('./_object-pie');
@@ -37611,23 +37507,26 @@ module.exports = !$assign || require('./_fails')(function () {
     var length = keys.length;
     var j = 0;
     var key;
-    while (length > j) if (isEnum.call(S, key = keys[j++])) T[key] = S[key];
+    while (length > j) {
+      key = keys[j++];
+      if (!DESCRIPTORS || isEnum.call(S, key)) T[key] = S[key];
+    }
   } return T;
 } : $assign;
 
-},{"./_object-keys":"../../node_modules/core-js/library/modules/_object-keys.js","./_object-gops":"../../node_modules/core-js/library/modules/_object-gops.js","./_object-pie":"../../node_modules/core-js/library/modules/_object-pie.js","./_to-object":"../../node_modules/core-js/library/modules/_to-object.js","./_iobject":"../../node_modules/core-js/library/modules/_iobject.js","./_fails":"../../node_modules/core-js/library/modules/_fails.js"}],"../../node_modules/core-js/library/modules/es6.object.assign.js":[function(require,module,exports) {
+},{"./_descriptors":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_descriptors.js","./_object-keys":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-keys.js","./_object-gops":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-gops.js","./_object-pie":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-pie.js","./_to-object":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-object.js","./_iobject":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_iobject.js","./_fails":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_fails.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/es6.object.assign.js":[function(require,module,exports) {
 // 19.1.3.1 Object.assign(target, source)
 var $export = require('./_export');
 
 $export($export.S + $export.F, 'Object', { assign: require('./_object-assign') });
 
-},{"./_export":"../../node_modules/core-js/library/modules/_export.js","./_object-assign":"../../node_modules/core-js/library/modules/_object-assign.js"}],"../../node_modules/core-js/library/fn/object/assign.js":[function(require,module,exports) {
+},{"./_export":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_export.js","./_object-assign":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-assign.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/fn/object/assign.js":[function(require,module,exports) {
 require('../../modules/es6.object.assign');
 module.exports = require('../../modules/_core').Object.assign;
 
-},{"../../modules/es6.object.assign":"../../node_modules/core-js/library/modules/es6.object.assign.js","../../modules/_core":"../../node_modules/core-js/library/modules/_core.js"}],"../../node_modules/@babel/runtime-corejs2/core-js/object/assign.js":[function(require,module,exports) {
+},{"../../modules/es6.object.assign":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/es6.object.assign.js","../../modules/_core":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_core.js"}],"../../node_modules/@babel/runtime-corejs2/core-js/object/assign.js":[function(require,module,exports) {
 module.exports = require("core-js/library/fn/object/assign");
-},{"core-js/library/fn/object/assign":"../../node_modules/core-js/library/fn/object/assign.js"}],"../../node_modules/@babel/runtime-corejs2/helpers/esm/extends.js":[function(require,module,exports) {
+},{"core-js/library/fn/object/assign":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/fn/object/assign.js"}],"../../node_modules/@babel/runtime-corejs2/helpers/esm/extends.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37656,7 +37555,7 @@ function _extends() {
 
   return _extends.apply(this, arguments);
 }
-},{"../../core-js/object/assign":"../../node_modules/@babel/runtime-corejs2/core-js/object/assign.js"}],"../../node_modules/core-js/library/modules/_object-dps.js":[function(require,module,exports) {
+},{"../../core-js/object/assign":"../../node_modules/@babel/runtime-corejs2/core-js/object/assign.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-dps.js":[function(require,module,exports) {
 var dP = require('./_object-dp');
 var anObject = require('./_an-object');
 var getKeys = require('./_object-keys');
@@ -37671,11 +37570,11 @@ module.exports = require('./_descriptors') ? Object.defineProperties : function 
   return O;
 };
 
-},{"./_object-dp":"../../node_modules/core-js/library/modules/_object-dp.js","./_an-object":"../../node_modules/core-js/library/modules/_an-object.js","./_object-keys":"../../node_modules/core-js/library/modules/_object-keys.js","./_descriptors":"../../node_modules/core-js/library/modules/_descriptors.js"}],"../../node_modules/core-js/library/modules/_html.js":[function(require,module,exports) {
+},{"./_object-dp":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-dp.js","./_an-object":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_an-object.js","./_object-keys":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-keys.js","./_descriptors":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_descriptors.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_html.js":[function(require,module,exports) {
 var document = require('./_global').document;
 module.exports = document && document.documentElement;
 
-},{"./_global":"../../node_modules/core-js/library/modules/_global.js"}],"../../node_modules/core-js/library/modules/_object-create.js":[function(require,module,exports) {
+},{"./_global":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_global.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-create.js":[function(require,module,exports) {
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 var anObject = require('./_an-object');
 var dPs = require('./_object-dps');
@@ -37718,21 +37617,21 @@ module.exports = Object.create || function create(O, Properties) {
   return Properties === undefined ? result : dPs(result, Properties);
 };
 
-},{"./_an-object":"../../node_modules/core-js/library/modules/_an-object.js","./_object-dps":"../../node_modules/core-js/library/modules/_object-dps.js","./_enum-bug-keys":"../../node_modules/core-js/library/modules/_enum-bug-keys.js","./_shared-key":"../../node_modules/core-js/library/modules/_shared-key.js","./_dom-create":"../../node_modules/core-js/library/modules/_dom-create.js","./_html":"../../node_modules/core-js/library/modules/_html.js"}],"../../node_modules/core-js/library/modules/es6.object.create.js":[function(require,module,exports) {
+},{"./_an-object":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_an-object.js","./_object-dps":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-dps.js","./_enum-bug-keys":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_enum-bug-keys.js","./_shared-key":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_shared-key.js","./_dom-create":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_dom-create.js","./_html":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_html.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/es6.object.create.js":[function(require,module,exports) {
 var $export = require('./_export');
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 $export($export.S, 'Object', { create: require('./_object-create') });
 
-},{"./_export":"../../node_modules/core-js/library/modules/_export.js","./_object-create":"../../node_modules/core-js/library/modules/_object-create.js"}],"../../node_modules/core-js/library/fn/object/create.js":[function(require,module,exports) {
+},{"./_export":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_export.js","./_object-create":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-create.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/fn/object/create.js":[function(require,module,exports) {
 require('../../modules/es6.object.create');
 var $Object = require('../../modules/_core').Object;
 module.exports = function create(P, D) {
   return $Object.create(P, D);
 };
 
-},{"../../modules/es6.object.create":"../../node_modules/core-js/library/modules/es6.object.create.js","../../modules/_core":"../../node_modules/core-js/library/modules/_core.js"}],"../../node_modules/@babel/runtime-corejs2/core-js/object/create.js":[function(require,module,exports) {
+},{"../../modules/es6.object.create":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/es6.object.create.js","../../modules/_core":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_core.js"}],"../../node_modules/@babel/runtime-corejs2/core-js/object/create.js":[function(require,module,exports) {
 module.exports = require("core-js/library/fn/object/create");
-},{"core-js/library/fn/object/create":"../../node_modules/core-js/library/fn/object/create.js"}],"../../node_modules/@babel/runtime-corejs2/helpers/esm/inheritsLoose.js":[function(require,module,exports) {
+},{"core-js/library/fn/object/create":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/fn/object/create.js"}],"../../node_modules/@babel/runtime-corejs2/helpers/esm/inheritsLoose.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37749,7 +37648,7 @@ function _inheritsLoose(subClass, superClass) {
   subClass.prototype.constructor = subClass;
   subClass.__proto__ = superClass;
 }
-},{"../../core-js/object/create":"../../node_modules/@babel/runtime-corejs2/core-js/object/create.js"}],"../../node_modules/core-js/library/modules/_object-sap.js":[function(require,module,exports) {
+},{"../../core-js/object/create":"../../node_modules/@babel/runtime-corejs2/core-js/object/create.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-sap.js":[function(require,module,exports) {
 // most Object methods by ES6 should accept primitives
 var $export = require('./_export');
 var core = require('./_core');
@@ -37761,7 +37660,7 @@ module.exports = function (KEY, exec) {
   $export($export.S + $export.F * fails(function () { fn(1); }), 'Object', exp);
 };
 
-},{"./_export":"../../node_modules/core-js/library/modules/_export.js","./_core":"../../node_modules/core-js/library/modules/_core.js","./_fails":"../../node_modules/core-js/library/modules/_fails.js"}],"../../node_modules/core-js/library/modules/es6.object.keys.js":[function(require,module,exports) {
+},{"./_export":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_export.js","./_core":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_core.js","./_fails":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_fails.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/es6.object.keys.js":[function(require,module,exports) {
 // 19.1.2.14 Object.keys(O)
 var toObject = require('./_to-object');
 var $keys = require('./_object-keys');
@@ -37772,13 +37671,13 @@ require('./_object-sap')('keys', function () {
   };
 });
 
-},{"./_to-object":"../../node_modules/core-js/library/modules/_to-object.js","./_object-keys":"../../node_modules/core-js/library/modules/_object-keys.js","./_object-sap":"../../node_modules/core-js/library/modules/_object-sap.js"}],"../../node_modules/core-js/library/fn/object/keys.js":[function(require,module,exports) {
+},{"./_to-object":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-object.js","./_object-keys":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-keys.js","./_object-sap":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-sap.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/fn/object/keys.js":[function(require,module,exports) {
 require('../../modules/es6.object.keys');
 module.exports = require('../../modules/_core').Object.keys;
 
-},{"../../modules/es6.object.keys":"../../node_modules/core-js/library/modules/es6.object.keys.js","../../modules/_core":"../../node_modules/core-js/library/modules/_core.js"}],"../../node_modules/@babel/runtime-corejs2/core-js/object/keys.js":[function(require,module,exports) {
+},{"../../modules/es6.object.keys":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/es6.object.keys.js","../../modules/_core":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_core.js"}],"../../node_modules/@babel/runtime-corejs2/core-js/object/keys.js":[function(require,module,exports) {
 module.exports = require("core-js/library/fn/object/keys");
-},{"core-js/library/fn/object/keys":"../../node_modules/core-js/library/fn/object/keys.js"}],"../../node_modules/@babel/runtime-corejs2/helpers/esm/objectWithoutPropertiesLoose.js":[function(require,module,exports) {
+},{"core-js/library/fn/object/keys":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/fn/object/keys.js"}],"../../node_modules/@babel/runtime-corejs2/helpers/esm/objectWithoutPropertiesLoose.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38133,7 +38032,8 @@ function uncontrollable(Component, controlledValues, methods) {
 }
 
 module.exports = exports["default"];
-},{"react":"../../node_modules/react/index.js","invariant":"../../node_modules/invariant/browser.js","./utils":"../../node_modules/uncontrollable/utils.js"}],"../../node_modules/core-js/library/modules/_object-to-array.js":[function(require,module,exports) {
+},{"react":"../../node_modules/react/index.js","invariant":"../../node_modules/invariant/browser.js","./utils":"../../node_modules/uncontrollable/utils.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-to-array.js":[function(require,module,exports) {
+var DESCRIPTORS = require('./_descriptors');
 var getKeys = require('./_object-keys');
 var toIObject = require('./_to-iobject');
 var isEnum = require('./_object-pie').f;
@@ -38145,13 +38045,17 @@ module.exports = function (isEntries) {
     var i = 0;
     var result = [];
     var key;
-    while (length > i) if (isEnum.call(O, key = keys[i++])) {
-      result.push(isEntries ? [key, O[key]] : O[key]);
-    } return result;
+    while (length > i) {
+      key = keys[i++];
+      if (!DESCRIPTORS || isEnum.call(O, key)) {
+        result.push(isEntries ? [key, O[key]] : O[key]);
+      }
+    }
+    return result;
   };
 };
 
-},{"./_object-keys":"../../node_modules/core-js/library/modules/_object-keys.js","./_to-iobject":"../../node_modules/core-js/library/modules/_to-iobject.js","./_object-pie":"../../node_modules/core-js/library/modules/_object-pie.js"}],"../../node_modules/core-js/library/modules/es7.object.entries.js":[function(require,module,exports) {
+},{"./_descriptors":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_descriptors.js","./_object-keys":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-keys.js","./_to-iobject":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-iobject.js","./_object-pie":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-pie.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/es7.object.entries.js":[function(require,module,exports) {
 // https://github.com/tc39/proposal-object-values-entries
 var $export = require('./_export');
 var $entries = require('./_object-to-array')(true);
@@ -38162,13 +38066,13 @@ $export($export.S, 'Object', {
   }
 });
 
-},{"./_export":"../../node_modules/core-js/library/modules/_export.js","./_object-to-array":"../../node_modules/core-js/library/modules/_object-to-array.js"}],"../../node_modules/core-js/library/fn/object/entries.js":[function(require,module,exports) {
+},{"./_export":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_export.js","./_object-to-array":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-to-array.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/fn/object/entries.js":[function(require,module,exports) {
 require('../../modules/es7.object.entries');
 module.exports = require('../../modules/_core').Object.entries;
 
-},{"../../modules/es7.object.entries":"../../node_modules/core-js/library/modules/es7.object.entries.js","../../modules/_core":"../../node_modules/core-js/library/modules/_core.js"}],"../../node_modules/@babel/runtime-corejs2/core-js/object/entries.js":[function(require,module,exports) {
+},{"../../modules/es7.object.entries":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/es7.object.entries.js","../../modules/_core":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_core.js"}],"../../node_modules/@babel/runtime-corejs2/core-js/object/entries.js":[function(require,module,exports) {
 module.exports = require("core-js/library/fn/object/entries");
-},{"core-js/library/fn/object/entries":"../../node_modules/core-js/library/fn/object/entries.js"}],"../../node_modules/react-bootstrap/es/utils/StyleConfig.js":[function(require,module,exports) {
+},{"core-js/library/fn/object/entries":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/fn/object/entries.js"}],"../../node_modules/react-bootstrap/es/utils/StyleConfig.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38971,7 +38875,7 @@ function (_React$Component) {
 
 var _default = Accordion;
 exports.default = _default;
-},{"@babel/runtime-corejs2/helpers/esm/extends":"../../node_modules/@babel/runtime-corejs2/helpers/esm/extends.js","@babel/runtime-corejs2/helpers/esm/inheritsLoose":"../../node_modules/@babel/runtime-corejs2/helpers/esm/inheritsLoose.js","react":"../../node_modules/react/index.js","./PanelGroup":"../../node_modules/react-bootstrap/es/PanelGroup.js"}],"../../node_modules/core-js/library/modules/es7.object.values.js":[function(require,module,exports) {
+},{"@babel/runtime-corejs2/helpers/esm/extends":"../../node_modules/@babel/runtime-corejs2/helpers/esm/extends.js","@babel/runtime-corejs2/helpers/esm/inheritsLoose":"../../node_modules/@babel/runtime-corejs2/helpers/esm/inheritsLoose.js","react":"../../node_modules/react/index.js","./PanelGroup":"../../node_modules/react-bootstrap/es/PanelGroup.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/es7.object.values.js":[function(require,module,exports) {
 // https://github.com/tc39/proposal-object-values-entries
 var $export = require('./_export');
 var $values = require('./_object-to-array')(false);
@@ -38982,13 +38886,13 @@ $export($export.S, 'Object', {
   }
 });
 
-},{"./_export":"../../node_modules/core-js/library/modules/_export.js","./_object-to-array":"../../node_modules/core-js/library/modules/_object-to-array.js"}],"../../node_modules/core-js/library/fn/object/values.js":[function(require,module,exports) {
+},{"./_export":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_export.js","./_object-to-array":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-to-array.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/fn/object/values.js":[function(require,module,exports) {
 require('../../modules/es7.object.values');
 module.exports = require('../../modules/_core').Object.values;
 
-},{"../../modules/es7.object.values":"../../node_modules/core-js/library/modules/es7.object.values.js","../../modules/_core":"../../node_modules/core-js/library/modules/_core.js"}],"../../node_modules/@babel/runtime-corejs2/core-js/object/values.js":[function(require,module,exports) {
+},{"../../modules/es7.object.values":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/es7.object.values.js","../../modules/_core":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_core.js"}],"../../node_modules/@babel/runtime-corejs2/core-js/object/values.js":[function(require,module,exports) {
 module.exports = require("core-js/library/fn/object/values");
-},{"core-js/library/fn/object/values":"../../node_modules/core-js/library/fn/object/values.js"}],"../../node_modules/react-bootstrap/es/CloseButton.js":[function(require,module,exports) {
+},{"core-js/library/fn/object/values":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/fn/object/values.js"}],"../../node_modules/react-bootstrap/es/CloseButton.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -39233,7 +39137,7 @@ function _assertThisInitialized(self) {
   return self;
 }
 },{}],"../../node_modules/react-is/cjs/react-is.development.js":[function(require,module,exports) {
-/** @license React v16.6.1
+/** @license React v16.12.0
  * react-is.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -39259,17 +39163,23 @@ if ("development" !== "production") {
     var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
     var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
     var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
-    var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace;
+    var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace; // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
+    // (unstable) APIs that have been removed. Can we remove the symbols?
+
     var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
     var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
     var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
     var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
+    var REACT_SUSPENSE_LIST_TYPE = hasSymbol ? Symbol.for('react.suspense_list') : 0xead8;
     var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
     var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
+    var REACT_FUNDAMENTAL_TYPE = hasSymbol ? Symbol.for('react.fundamental') : 0xead5;
+    var REACT_RESPONDER_TYPE = hasSymbol ? Symbol.for('react.responder') : 0xead6;
+    var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for('react.scope') : 0xead7;
 
     function isValidElementType(type) {
       return typeof type === 'string' || typeof type === 'function' || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
-      type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE);
+      type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE);
     }
     /**
      * Forked from fbjs/warning:
@@ -39286,11 +39196,11 @@ if ("development" !== "production") {
      */
 
 
-    var lowPriorityWarning = function () {};
+    var lowPriorityWarningWithoutStack = function () {};
 
     {
       var printWarning = function (format) {
-        for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
           args[_key - 1] = arguments[_key];
         }
 
@@ -39311,21 +39221,21 @@ if ("development" !== "production") {
         } catch (x) {}
       };
 
-      lowPriorityWarning = function (condition, format) {
+      lowPriorityWarningWithoutStack = function (condition, format) {
         if (format === undefined) {
-          throw new Error('`lowPriorityWarning(condition, format, ...args)` requires a warning ' + 'message argument');
+          throw new Error('`lowPriorityWarningWithoutStack(condition, format, ...args)` requires a warning ' + 'message argument');
         }
 
         if (!condition) {
-          for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+          for (var _len2 = arguments.length, args = new Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
             args[_key2 - 2] = arguments[_key2];
           }
 
-          printWarning.apply(undefined, [format].concat(args));
+          printWarning.apply(void 0, [format].concat(args));
         }
       };
     }
-    var lowPriorityWarning$1 = lowPriorityWarning;
+    var lowPriorityWarningWithoutStack$1 = lowPriorityWarningWithoutStack;
 
     function typeOf(object) {
       if (typeof object === 'object' && object !== null) {
@@ -39341,6 +39251,7 @@ if ("development" !== "production") {
               case REACT_FRAGMENT_TYPE:
               case REACT_PROFILER_TYPE:
               case REACT_STRICT_MODE_TYPE:
+              case REACT_SUSPENSE_TYPE:
                 return type;
 
               default:
@@ -39349,6 +39260,8 @@ if ("development" !== "production") {
                 switch ($$typeofType) {
                   case REACT_CONTEXT_TYPE:
                   case REACT_FORWARD_REF_TYPE:
+                  case REACT_LAZY_TYPE:
+                  case REACT_MEMO_TYPE:
                   case REACT_PROVIDER_TYPE:
                     return $$typeofType;
 
@@ -39374,16 +39287,19 @@ if ("development" !== "production") {
     var Element = REACT_ELEMENT_TYPE;
     var ForwardRef = REACT_FORWARD_REF_TYPE;
     var Fragment = REACT_FRAGMENT_TYPE;
-    var Profiler = REACT_PROFILER_TYPE;
+    var Lazy = REACT_LAZY_TYPE;
+    var Memo = REACT_MEMO_TYPE;
     var Portal = REACT_PORTAL_TYPE;
+    var Profiler = REACT_PROFILER_TYPE;
     var StrictMode = REACT_STRICT_MODE_TYPE;
+    var Suspense = REACT_SUSPENSE_TYPE;
     var hasWarnedAboutDeprecatedIsAsyncMode = false; // AsyncMode should be deprecated
 
     function isAsyncMode(object) {
       {
         if (!hasWarnedAboutDeprecatedIsAsyncMode) {
           hasWarnedAboutDeprecatedIsAsyncMode = true;
-          lowPriorityWarning$1(false, 'The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
+          lowPriorityWarningWithoutStack$1(false, 'The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
         }
       }
       return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
@@ -39413,16 +39329,28 @@ if ("development" !== "production") {
       return typeOf(object) === REACT_FRAGMENT_TYPE;
     }
 
-    function isProfiler(object) {
-      return typeOf(object) === REACT_PROFILER_TYPE;
+    function isLazy(object) {
+      return typeOf(object) === REACT_LAZY_TYPE;
+    }
+
+    function isMemo(object) {
+      return typeOf(object) === REACT_MEMO_TYPE;
     }
 
     function isPortal(object) {
       return typeOf(object) === REACT_PORTAL_TYPE;
     }
 
+    function isProfiler(object) {
+      return typeOf(object) === REACT_PROFILER_TYPE;
+    }
+
     function isStrictMode(object) {
       return typeOf(object) === REACT_STRICT_MODE_TYPE;
+    }
+
+    function isSuspense(object) {
+      return typeOf(object) === REACT_SUSPENSE_TYPE;
     }
 
     exports.typeOf = typeOf;
@@ -39433,9 +39361,12 @@ if ("development" !== "production") {
     exports.Element = Element;
     exports.ForwardRef = ForwardRef;
     exports.Fragment = Fragment;
-    exports.Profiler = Profiler;
+    exports.Lazy = Lazy;
+    exports.Memo = Memo;
     exports.Portal = Portal;
+    exports.Profiler = Profiler;
     exports.StrictMode = StrictMode;
+    exports.Suspense = Suspense;
     exports.isValidElementType = isValidElementType;
     exports.isAsyncMode = isAsyncMode;
     exports.isConcurrentMode = isConcurrentMode;
@@ -39444,9 +39375,12 @@ if ("development" !== "production") {
     exports.isElement = isElement;
     exports.isForwardRef = isForwardRef;
     exports.isFragment = isFragment;
-    exports.isProfiler = isProfiler;
+    exports.isLazy = isLazy;
+    exports.isMemo = isMemo;
     exports.isPortal = isPortal;
+    exports.isProfiler = isProfiler;
     exports.isStrictMode = isStrictMode;
+    exports.isSuspense = isSuspense;
   })();
 }
 },{}],"../../node_modules/react-is/index.js":[function(require,module,exports) {
@@ -41859,11 +41793,11 @@ Col.defaultProps = defaultProps;
 var _default = (0, _bootstrapUtils.bsClass)('col', Col);
 
 exports.default = _default;
-},{"@babel/runtime-corejs2/helpers/esm/extends":"../../node_modules/@babel/runtime-corejs2/helpers/esm/extends.js","@babel/runtime-corejs2/helpers/esm/objectWithoutPropertiesLoose":"../../node_modules/@babel/runtime-corejs2/helpers/esm/objectWithoutPropertiesLoose.js","@babel/runtime-corejs2/helpers/esm/inheritsLoose":"../../node_modules/@babel/runtime-corejs2/helpers/esm/inheritsLoose.js","classnames":"../../node_modules/classnames/index.js","react":"../../node_modules/react/index.js","prop-types":"../../node_modules/prop-types/index.js","prop-types-extra/lib/elementType":"../../node_modules/prop-types-extra/lib/elementType.js","./utils/bootstrapUtils":"../../node_modules/react-bootstrap/es/utils/bootstrapUtils.js","./utils/StyleConfig":"../../node_modules/react-bootstrap/es/utils/StyleConfig.js"}],"../../node_modules/core-js/library/modules/_string-ws.js":[function(require,module,exports) {
+},{"@babel/runtime-corejs2/helpers/esm/extends":"../../node_modules/@babel/runtime-corejs2/helpers/esm/extends.js","@babel/runtime-corejs2/helpers/esm/objectWithoutPropertiesLoose":"../../node_modules/@babel/runtime-corejs2/helpers/esm/objectWithoutPropertiesLoose.js","@babel/runtime-corejs2/helpers/esm/inheritsLoose":"../../node_modules/@babel/runtime-corejs2/helpers/esm/inheritsLoose.js","classnames":"../../node_modules/classnames/index.js","react":"../../node_modules/react/index.js","prop-types":"../../node_modules/prop-types/index.js","prop-types-extra/lib/elementType":"../../node_modules/prop-types-extra/lib/elementType.js","./utils/bootstrapUtils":"../../node_modules/react-bootstrap/es/utils/bootstrapUtils.js","./utils/StyleConfig":"../../node_modules/react-bootstrap/es/utils/StyleConfig.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_string-ws.js":[function(require,module,exports) {
 module.exports = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003' +
   '\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
 
-},{}],"../../node_modules/core-js/library/modules/_string-trim.js":[function(require,module,exports) {
+},{}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_string-trim.js":[function(require,module,exports) {
 var $export = require('./_export');
 var defined = require('./_defined');
 var fails = require('./_fails');
@@ -41895,7 +41829,7 @@ var trim = exporter.trim = function (string, TYPE) {
 
 module.exports = exporter;
 
-},{"./_export":"../../node_modules/core-js/library/modules/_export.js","./_defined":"../../node_modules/core-js/library/modules/_defined.js","./_fails":"../../node_modules/core-js/library/modules/_fails.js","./_string-ws":"../../node_modules/core-js/library/modules/_string-ws.js"}],"../../node_modules/core-js/library/modules/_parse-int.js":[function(require,module,exports) {
+},{"./_export":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_export.js","./_defined":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_defined.js","./_fails":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_fails.js","./_string-ws":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_string-ws.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_parse-int.js":[function(require,module,exports) {
 var $parseInt = require('./_global').parseInt;
 var $trim = require('./_string-trim').trim;
 var ws = require('./_string-ws');
@@ -41906,19 +41840,19 @@ module.exports = $parseInt(ws + '08') !== 8 || $parseInt(ws + '0x16') !== 22 ? f
   return $parseInt(string, (radix >>> 0) || (hex.test(string) ? 16 : 10));
 } : $parseInt;
 
-},{"./_global":"../../node_modules/core-js/library/modules/_global.js","./_string-trim":"../../node_modules/core-js/library/modules/_string-trim.js","./_string-ws":"../../node_modules/core-js/library/modules/_string-ws.js"}],"../../node_modules/core-js/library/modules/es6.parse-int.js":[function(require,module,exports) {
+},{"./_global":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_global.js","./_string-trim":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_string-trim.js","./_string-ws":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_string-ws.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/es6.parse-int.js":[function(require,module,exports) {
 var $export = require('./_export');
 var $parseInt = require('./_parse-int');
 // 18.2.5 parseInt(string, radix)
 $export($export.G + $export.F * (parseInt != $parseInt), { parseInt: $parseInt });
 
-},{"./_export":"../../node_modules/core-js/library/modules/_export.js","./_parse-int":"../../node_modules/core-js/library/modules/_parse-int.js"}],"../../node_modules/core-js/library/fn/parse-int.js":[function(require,module,exports) {
+},{"./_export":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_export.js","./_parse-int":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_parse-int.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/fn/parse-int.js":[function(require,module,exports) {
 require('../modules/es6.parse-int');
 module.exports = require('../modules/_core').parseInt;
 
-},{"../modules/es6.parse-int":"../../node_modules/core-js/library/modules/es6.parse-int.js","../modules/_core":"../../node_modules/core-js/library/modules/_core.js"}],"../../node_modules/@babel/runtime-corejs2/core-js/parse-int.js":[function(require,module,exports) {
+},{"../modules/es6.parse-int":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/es6.parse-int.js","../modules/_core":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_core.js"}],"../../node_modules/@babel/runtime-corejs2/core-js/parse-int.js":[function(require,module,exports) {
 module.exports = require("core-js/library/fn/parse-int");
-},{"core-js/library/fn/parse-int":"../../node_modules/core-js/library/fn/parse-int.js"}],"../../node_modules/react-lifecycles-compat/react-lifecycles-compat.es.js":[function(require,module,exports) {
+},{"core-js/library/fn/parse-int":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/fn/parse-int.js"}],"../../node_modules/react-lifecycles-compat/react-lifecycles-compat.es.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -42054,39 +41988,23 @@ function polyfill(Component) {
 "use strict";
 
 exports.__esModule = true;
-exports.transitionTimeout = transitionTimeout;
 exports.classNamesShape = exports.timeoutsShape = void 0;
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function transitionTimeout(transitionType) {
-  var timeoutPropName = 'transition' + transitionType + 'Timeout';
-  var enabledPropName = 'transition' + transitionType;
-  return function (props) {
-    // If the transition is enabled
-    if (props[enabledPropName]) {
-      // If no timeout duration is provided
-      if (props[timeoutPropName] == null) {
-        return new Error(timeoutPropName + ' wasn\'t supplied to CSSTransitionGroup: ' + 'this can cause unreliable animations and won\'t be supported in ' + 'a future version of React. See ' + 'https://fb.me/react-animation-transition-group-timeout for more ' + 'information.'); // If the duration isn't a number
-      } else if (typeof props[timeoutPropName] !== 'number') {
-        return new Error(timeoutPropName + ' must be a number (in milliseconds)');
-      }
-    }
-
-    return null;
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : {
+    default: obj
   };
 }
 
-var timeoutsShape = _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.shape({
+var timeoutsShape = "development" !== 'production' ? _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.shape({
   enter: _propTypes.default.number,
-  exit: _propTypes.default.number
-}).isRequired]);
-
+  exit: _propTypes.default.number,
+  appear: _propTypes.default.number
+}).isRequired]) : null;
 exports.timeoutsShape = timeoutsShape;
-
-var classNamesShape = _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.shape({
+var classNamesShape = "development" !== 'production' ? _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.shape({
   enter: _propTypes.default.string,
   exit: _propTypes.default.string,
   active: _propTypes.default.string
@@ -42097,8 +42015,7 @@ var classNamesShape = _propTypes.default.oneOfType([_propTypes.default.string, _
   exit: _propTypes.default.string,
   exitDone: _propTypes.default.string,
   exitActive: _propTypes.default.string
-})]);
-
+})]) : null;
 exports.classNamesShape = classNamesShape;
 },{"prop-types":"../../node_modules/prop-types/index.js"}],"../../node_modules/react-transition-group/Transition.js":[function(require,module,exports) {
 "use strict";
@@ -42183,13 +42100,24 @@ var EXITING = 'exiting';
  * it's used to animate the mounting and unmounting of a component, but can also
  * be used to describe in-place transition states as well.
  *
+ * ---
+ *
+ * **Note**: `Transition` is a platform-agnostic base component. If you're using
+ * transitions in CSS, you'll probably want to use
+ * [`CSSTransition`](https://reactcommunity.org/react-transition-group/css-transition)
+ * instead. It inherits all the features of `Transition`, but contains
+ * additional features necessary to play nice with CSS transitions (hence the
+ * name of the component).
+ *
+ * ---
+ *
  * By default the `Transition` component does not alter the behavior of the
- * component it renders, it only tracks "enter" and "exit" states for the components.
- * It's up to you to give meaning and effect to those states. For example we can
- * add styles to a component when it enters or exits:
+ * component it renders, it only tracks "enter" and "exit" states for the
+ * components. It's up to you to give meaning and effect to those states. For
+ * example we can add styles to a component when it enters or exits:
  *
  * ```jsx
- * import Transition from 'react-transition-group/Transition';
+ * import { Transition } from 'react-transition-group';
  *
  * const duration = 300;
  *
@@ -42205,7 +42133,7 @@ var EXITING = 'exiting';
  *
  * const Fade = ({ in: inProp }) => (
  *   <Transition in={inProp} timeout={duration}>
- *     {(state) => (
+ *     {state => (
  *       <div style={{
  *         ...defaultStyle,
  *         ...transitionStyles[state]
@@ -42217,60 +42145,43 @@ var EXITING = 'exiting';
  * );
  * ```
  *
- * As noted the `Transition` component doesn't _do_ anything by itself to its child component.
- * What it does do is track transition states over time so you can update the
- * component (such as by adding styles or classes) when it changes states.
- *
  * There are 4 main states a Transition can be in:
  *  - `'entering'`
  *  - `'entered'`
  *  - `'exiting'`
  *  - `'exited'`
  *
- * Transition state is toggled via the `in` prop. When `true` the component begins the
- * "Enter" stage. During this stage, the component will shift from its current transition state,
- * to `'entering'` for the duration of the transition and then to the `'entered'` stage once
- * it's complete. Let's take the following example:
+ * Transition state is toggled via the `in` prop. When `true` the component
+ * begins the "Enter" stage. During this stage, the component will shift from
+ * its current transition state, to `'entering'` for the duration of the
+ * transition and then to the `'entered'` stage once it's complete. Let's take
+ * the following example (we'll use the
+ * [useState](https://reactjs.org/docs/hooks-reference.html#usestate) hook):
  *
  * ```jsx
- * state = { in: false };
- *
- * toggleEnterState = () => {
- *   this.setState({ in: true });
- * }
- *
- * render() {
+ * function App() {
+ *   const [inProp, setInProp] = useState(false);
  *   return (
  *     <div>
- *       <Transition in={this.state.in} timeout={500} />
- *       <button onClick={this.toggleEnterState}>Click to Enter</button>
+ *       <Transition in={inProp} timeout={500}>
+ *         {state => (
+ *           // ...
+ *         )}
+ *       </Transition>
+ *       <button onClick={() => setInProp(true)}>
+ *         Click to Enter
+ *       </button>
  *     </div>
  *   );
  * }
  * ```
  *
- * When the button is clicked the component will shift to the `'entering'` state and
- * stay there for 500ms (the value of `timeout`) before it finally switches to `'entered'`.
+ * When the button is clicked the component will shift to the `'entering'` state
+ * and stay there for 500ms (the value of `timeout`) before it finally switches
+ * to `'entered'`.
  *
- * When `in` is `false` the same thing happens except the state moves from `'exiting'` to `'exited'`.
- *
- * ## Timing
- *
- * Timing is often the trickiest part of animation, mistakes can result in slight delays
- * that are hard to pin down. A common example is when you want to add an exit transition,
- * you should set the desired final styles when the state is `'exiting'`. That's when the
- * transition to those styles will start and, if you matched the `timeout` prop with the
- * CSS Transition duration, it will end exactly when the state changes to `'exited'`.
- *
- * > **Note**: For simpler transitions the `Transition` component might be enough, but
- * > take into account that it's platform-agnostic, while the `CSSTransition` component
- * > [forces reflows](https://github.com/reactjs/react-transition-group/blob/5007303e729a74be66a21c3e2205e4916821524b/src/CSSTransition.js#L208-L215)
- * > in order to make more complex transitions more predictable. For example, even though
- * > classes `example-enter` and `example-enter-active` are applied immediately one after
- * > another, you can still transition from one to the other because of the forced reflow
- * > (read [this issue](https://github.com/reactjs/react-transition-group/issues/159#issuecomment-322761171)
- * > for more info). Take this into account when choosing between `Transition` and
- * > `CSSTransition`.
+ * When `in` is `false` the same thing happens except the state moves from
+ * `'exiting'` to `'exited'`.
  */
 
 exports.EXITING = EXITING;
@@ -42384,8 +42295,9 @@ function (_React$Component) {
 
     if (timeout != null && typeof timeout !== 'number') {
       exit = timeout.exit;
-      enter = timeout.enter;
-      appear = timeout.appear;
+      enter = timeout.enter; // TODO: remove fallback for next major
+
+      appear = timeout.appear !== undefined ? timeout.appear : enter;
     }
 
     return {
@@ -42423,7 +42335,8 @@ function (_React$Component) {
 
     var enter = this.props.enter;
     var appearing = this.context.transitionGroup ? this.context.transitionGroup.isMounting : mounting;
-    var timeouts = this.getTimeouts(); // no enter animation skip right to ENTERED
+    var timeouts = this.getTimeouts();
+    var enterTimeout = appearing ? timeouts.appear : timeouts.enter; // no enter animation skip right to ENTERED
     // if we are mounting and running this it means appear _must_ be set
 
     if (!mounting && !enter) {
@@ -42439,10 +42352,9 @@ function (_React$Component) {
     this.safeSetState({
       status: ENTERING
     }, function () {
-      _this2.props.onEntering(node, appearing); // FIXME: appear timeout?
+      _this2.props.onEntering(node, appearing);
 
-
-      _this2.onTransitionEnd(node, timeouts.enter, function () {
+      _this2.onTransitionEnd(node, enterTimeout, function () {
         _this2.safeSetState({
           status: ENTERED
         }, function () {
@@ -42520,17 +42432,19 @@ function (_React$Component) {
 
   _proto.onTransitionEnd = function onTransitionEnd(node, timeout, handler) {
     this.setNextCallback(handler);
+    var doesNotHaveTimeoutOrListener = timeout == null && !this.props.addEndListener;
 
-    if (node) {
-      if (this.props.addEndListener) {
-        this.props.addEndListener(node, this.nextCallback);
-      }
-
-      if (timeout != null) {
-        setTimeout(this.nextCallback, timeout);
-      }
-    } else {
+    if (!node || doesNotHaveTimeoutOrListener) {
       setTimeout(this.nextCallback, 0);
+      return;
+    }
+
+    if (this.props.addEndListener) {
+      this.props.addEndListener(node, this.nextCallback);
+    }
+
+    if (timeout != null) {
+      setTimeout(this.nextCallback, timeout);
     }
   };
 
@@ -42581,15 +42495,15 @@ Transition.childContextTypes = {
 };
 Transition.propTypes = "development" !== "production" ? {
   /**
-   * A `function` child can be used instead of a React element.
-   * This function is called with the current transition status
-   * ('entering', 'entered', 'exiting', 'exited', 'unmounted'), which can be used
-   * to apply context specific props to a component.
+   * A `function` child can be used instead of a React element. This function is
+   * called with the current transition status (`'entering'`, `'entered'`,
+   * `'exiting'`, `'exited'`, `'unmounted'`), which can be used to apply context
+   * specific props to a component.
    *
    * ```jsx
-   * <Transition timeout={150}>
-   *   {(status) => (
-   *     <MyComponent className={`fade fade-${status}`} />
+   * <Transition in={this.state.in} timeout={150}>
+   *   {state => (
+   *     <MyComponent className={`fade fade-${state}`} />
    *   )}
    * </Transition>
    * ```
@@ -42636,23 +42550,32 @@ Transition.propTypes = "development" !== "production" ? {
 
   /**
    * The duration of the transition, in milliseconds.
-   * Required unless `addEndListener` is provided
+   * Required unless `addEndListener` is provided.
    *
-   * You may specify a single timeout for all transitions like: `timeout={500}`,
-   * or individually like:
+   * You may specify a single timeout for all transitions:
+   *
+   * ```jsx
+   * timeout={500}
+   * ```
+   *
+   * or individually:
    *
    * ```jsx
    * timeout={{
+   *  appear: 500,
    *  enter: 300,
    *  exit: 500,
    * }}
    * ```
    *
-   * @type {number | { enter?: number, exit?: number }}
+   * - `appear` defaults to the value of `enter`
+   * - `enter` defaults to `0`
+   * - `exit` defaults to `0`
+   *
+   * @type {number | { enter?: number, exit?: number, appear?: number }}
    */
   timeout: function timeout(props) {
-    var pt = "development" !== "production" ? _PropTypes.timeoutsShape : {};
-    ;
+    var pt = _PropTypes.timeoutsShape;
     if (!props.addEndListener) pt = pt.isRequired;
 
     for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -43259,7 +43182,7 @@ function isRequiredForA11y(validator) {
   };
 }
 module.exports = exports['default'];
-},{}],"../../node_modules/core-js/library/modules/_string-at.js":[function(require,module,exports) {
+},{}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_string-at.js":[function(require,module,exports) {
 var toInteger = require('./_to-integer');
 var defined = require('./_defined');
 // true  -> String#at
@@ -43278,13 +43201,13 @@ module.exports = function (TO_STRING) {
   };
 };
 
-},{"./_to-integer":"../../node_modules/core-js/library/modules/_to-integer.js","./_defined":"../../node_modules/core-js/library/modules/_defined.js"}],"../../node_modules/core-js/library/modules/_redefine.js":[function(require,module,exports) {
+},{"./_to-integer":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-integer.js","./_defined":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_defined.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_redefine.js":[function(require,module,exports) {
 module.exports = require('./_hide');
 
-},{"./_hide":"../../node_modules/core-js/library/modules/_hide.js"}],"../../node_modules/core-js/library/modules/_iterators.js":[function(require,module,exports) {
+},{"./_hide":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_hide.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_iterators.js":[function(require,module,exports) {
 module.exports = {};
 
-},{}],"../../node_modules/core-js/library/modules/_wks.js":[function(require,module,exports) {
+},{}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_wks.js":[function(require,module,exports) {
 var store = require('./_shared')('wks');
 var uid = require('./_uid');
 var Symbol = require('./_global').Symbol;
@@ -43297,7 +43220,7 @@ var $exports = module.exports = function (name) {
 
 $exports.store = store;
 
-},{"./_shared":"../../node_modules/core-js/library/modules/_shared.js","./_uid":"../../node_modules/core-js/library/modules/_uid.js","./_global":"../../node_modules/core-js/library/modules/_global.js"}],"../../node_modules/core-js/library/modules/_set-to-string-tag.js":[function(require,module,exports) {
+},{"./_shared":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_shared.js","./_uid":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_uid.js","./_global":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_global.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_set-to-string-tag.js":[function(require,module,exports) {
 var def = require('./_object-dp').f;
 var has = require('./_has');
 var TAG = require('./_wks')('toStringTag');
@@ -43306,7 +43229,7 @@ module.exports = function (it, tag, stat) {
   if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
 };
 
-},{"./_object-dp":"../../node_modules/core-js/library/modules/_object-dp.js","./_has":"../../node_modules/core-js/library/modules/_has.js","./_wks":"../../node_modules/core-js/library/modules/_wks.js"}],"../../node_modules/core-js/library/modules/_iter-create.js":[function(require,module,exports) {
+},{"./_object-dp":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-dp.js","./_has":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_has.js","./_wks":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_wks.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_iter-create.js":[function(require,module,exports) {
 'use strict';
 var create = require('./_object-create');
 var descriptor = require('./_property-desc');
@@ -43321,7 +43244,7 @@ module.exports = function (Constructor, NAME, next) {
   setToStringTag(Constructor, NAME + ' Iterator');
 };
 
-},{"./_object-create":"../../node_modules/core-js/library/modules/_object-create.js","./_property-desc":"../../node_modules/core-js/library/modules/_property-desc.js","./_set-to-string-tag":"../../node_modules/core-js/library/modules/_set-to-string-tag.js","./_hide":"../../node_modules/core-js/library/modules/_hide.js","./_wks":"../../node_modules/core-js/library/modules/_wks.js"}],"../../node_modules/core-js/library/modules/_object-gpo.js":[function(require,module,exports) {
+},{"./_object-create":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-create.js","./_property-desc":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_property-desc.js","./_set-to-string-tag":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_set-to-string-tag.js","./_hide":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_hide.js","./_wks":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_wks.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-gpo.js":[function(require,module,exports) {
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
 var has = require('./_has');
 var toObject = require('./_to-object');
@@ -43336,7 +43259,7 @@ module.exports = Object.getPrototypeOf || function (O) {
   } return O instanceof Object ? ObjectProto : null;
 };
 
-},{"./_has":"../../node_modules/core-js/library/modules/_has.js","./_to-object":"../../node_modules/core-js/library/modules/_to-object.js","./_shared-key":"../../node_modules/core-js/library/modules/_shared-key.js"}],"../../node_modules/core-js/library/modules/_iter-define.js":[function(require,module,exports) {
+},{"./_has":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_has.js","./_to-object":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-object.js","./_shared-key":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_shared-key.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_iter-define.js":[function(require,module,exports) {
 'use strict';
 var LIBRARY = require('./_library');
 var $export = require('./_export');
@@ -43407,7 +43330,7 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
   return methods;
 };
 
-},{"./_library":"../../node_modules/core-js/library/modules/_library.js","./_export":"../../node_modules/core-js/library/modules/_export.js","./_redefine":"../../node_modules/core-js/library/modules/_redefine.js","./_hide":"../../node_modules/core-js/library/modules/_hide.js","./_iterators":"../../node_modules/core-js/library/modules/_iterators.js","./_iter-create":"../../node_modules/core-js/library/modules/_iter-create.js","./_set-to-string-tag":"../../node_modules/core-js/library/modules/_set-to-string-tag.js","./_object-gpo":"../../node_modules/core-js/library/modules/_object-gpo.js","./_wks":"../../node_modules/core-js/library/modules/_wks.js"}],"../../node_modules/core-js/library/modules/es6.string.iterator.js":[function(require,module,exports) {
+},{"./_library":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_library.js","./_export":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_export.js","./_redefine":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_redefine.js","./_hide":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_hide.js","./_iterators":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_iterators.js","./_iter-create":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_iter-create.js","./_set-to-string-tag":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_set-to-string-tag.js","./_object-gpo":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-gpo.js","./_wks":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_wks.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/es6.string.iterator.js":[function(require,module,exports) {
 'use strict';
 var $at = require('./_string-at')(true);
 
@@ -43426,7 +43349,7 @@ require('./_iter-define')(String, 'String', function (iterated) {
   return { value: point, done: false };
 });
 
-},{"./_string-at":"../../node_modules/core-js/library/modules/_string-at.js","./_iter-define":"../../node_modules/core-js/library/modules/_iter-define.js"}],"../../node_modules/core-js/library/modules/_iter-call.js":[function(require,module,exports) {
+},{"./_string-at":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_string-at.js","./_iter-define":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_iter-define.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_iter-call.js":[function(require,module,exports) {
 // call something on iterator step with safe closing on error
 var anObject = require('./_an-object');
 module.exports = function (iterator, fn, value, entries) {
@@ -43440,7 +43363,7 @@ module.exports = function (iterator, fn, value, entries) {
   }
 };
 
-},{"./_an-object":"../../node_modules/core-js/library/modules/_an-object.js"}],"../../node_modules/core-js/library/modules/_is-array-iter.js":[function(require,module,exports) {
+},{"./_an-object":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_an-object.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_is-array-iter.js":[function(require,module,exports) {
 // check on default Array iterator
 var Iterators = require('./_iterators');
 var ITERATOR = require('./_wks')('iterator');
@@ -43450,7 +43373,7 @@ module.exports = function (it) {
   return it !== undefined && (Iterators.Array === it || ArrayProto[ITERATOR] === it);
 };
 
-},{"./_iterators":"../../node_modules/core-js/library/modules/_iterators.js","./_wks":"../../node_modules/core-js/library/modules/_wks.js"}],"../../node_modules/core-js/library/modules/_create-property.js":[function(require,module,exports) {
+},{"./_iterators":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_iterators.js","./_wks":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_wks.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_create-property.js":[function(require,module,exports) {
 'use strict';
 var $defineProperty = require('./_object-dp');
 var createDesc = require('./_property-desc');
@@ -43460,7 +43383,7 @@ module.exports = function (object, index, value) {
   else object[index] = value;
 };
 
-},{"./_object-dp":"../../node_modules/core-js/library/modules/_object-dp.js","./_property-desc":"../../node_modules/core-js/library/modules/_property-desc.js"}],"../../node_modules/core-js/library/modules/_classof.js":[function(require,module,exports) {
+},{"./_object-dp":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_object-dp.js","./_property-desc":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_property-desc.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_classof.js":[function(require,module,exports) {
 // getting tag from 19.1.3.6 Object.prototype.toString()
 var cof = require('./_cof');
 var TAG = require('./_wks')('toStringTag');
@@ -43485,7 +43408,7 @@ module.exports = function (it) {
     : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
 };
 
-},{"./_cof":"../../node_modules/core-js/library/modules/_cof.js","./_wks":"../../node_modules/core-js/library/modules/_wks.js"}],"../../node_modules/core-js/library/modules/core.get-iterator-method.js":[function(require,module,exports) {
+},{"./_cof":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_cof.js","./_wks":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_wks.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/core.get-iterator-method.js":[function(require,module,exports) {
 var classof = require('./_classof');
 var ITERATOR = require('./_wks')('iterator');
 var Iterators = require('./_iterators');
@@ -43495,7 +43418,7 @@ module.exports = require('./_core').getIteratorMethod = function (it) {
     || Iterators[classof(it)];
 };
 
-},{"./_classof":"../../node_modules/core-js/library/modules/_classof.js","./_wks":"../../node_modules/core-js/library/modules/_wks.js","./_iterators":"../../node_modules/core-js/library/modules/_iterators.js","./_core":"../../node_modules/core-js/library/modules/_core.js"}],"../../node_modules/core-js/library/modules/_iter-detect.js":[function(require,module,exports) {
+},{"./_classof":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_classof.js","./_wks":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_wks.js","./_iterators":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_iterators.js","./_core":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_core.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_iter-detect.js":[function(require,module,exports) {
 var ITERATOR = require('./_wks')('iterator');
 var SAFE_CLOSING = false;
 
@@ -43519,7 +43442,7 @@ module.exports = function (exec, skipClosing) {
   return safe;
 };
 
-},{"./_wks":"../../node_modules/core-js/library/modules/_wks.js"}],"../../node_modules/core-js/library/modules/es6.array.from.js":[function(require,module,exports) {
+},{"./_wks":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_wks.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/es6.array.from.js":[function(require,module,exports) {
 'use strict';
 var ctx = require('./_ctx');
 var $export = require('./_export');
@@ -43558,14 +43481,14 @@ $export($export.S + $export.F * !require('./_iter-detect')(function (iter) { Arr
   }
 });
 
-},{"./_ctx":"../../node_modules/core-js/library/modules/_ctx.js","./_export":"../../node_modules/core-js/library/modules/_export.js","./_to-object":"../../node_modules/core-js/library/modules/_to-object.js","./_iter-call":"../../node_modules/core-js/library/modules/_iter-call.js","./_is-array-iter":"../../node_modules/core-js/library/modules/_is-array-iter.js","./_to-length":"../../node_modules/core-js/library/modules/_to-length.js","./_create-property":"../../node_modules/core-js/library/modules/_create-property.js","./core.get-iterator-method":"../../node_modules/core-js/library/modules/core.get-iterator-method.js","./_iter-detect":"../../node_modules/core-js/library/modules/_iter-detect.js"}],"../../node_modules/core-js/library/fn/array/from.js":[function(require,module,exports) {
+},{"./_ctx":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_ctx.js","./_export":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_export.js","./_to-object":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-object.js","./_iter-call":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_iter-call.js","./_is-array-iter":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_is-array-iter.js","./_to-length":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_to-length.js","./_create-property":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_create-property.js","./core.get-iterator-method":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/core.get-iterator-method.js","./_iter-detect":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_iter-detect.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/fn/array/from.js":[function(require,module,exports) {
 require('../../modules/es6.string.iterator');
 require('../../modules/es6.array.from');
 module.exports = require('../../modules/_core').Array.from;
 
-},{"../../modules/es6.string.iterator":"../../node_modules/core-js/library/modules/es6.string.iterator.js","../../modules/es6.array.from":"../../node_modules/core-js/library/modules/es6.array.from.js","../../modules/_core":"../../node_modules/core-js/library/modules/_core.js"}],"../../node_modules/@babel/runtime-corejs2/core-js/array/from.js":[function(require,module,exports) {
+},{"../../modules/es6.string.iterator":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/es6.string.iterator.js","../../modules/es6.array.from":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/es6.array.from.js","../../modules/_core":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_core.js"}],"../../node_modules/@babel/runtime-corejs2/core-js/array/from.js":[function(require,module,exports) {
 module.exports = require("core-js/library/fn/array/from");
-},{"core-js/library/fn/array/from":"../../node_modules/core-js/library/fn/array/from.js"}],"../../node_modules/dom-helpers/events/on.js":[function(require,module,exports) {
+},{"core-js/library/fn/array/from":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/fn/array/from.js"}],"../../node_modules/dom-helpers/events/on.js":[function(require,module,exports) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -46834,7 +46757,71 @@ function validate(props, propName, componentName, location, propFullName) {
 
 exports.default = (0, _createChainableTypeChecker2.default)(validate);
 module.exports = exports['default'];
-},{"react":"../../node_modules/react/index.js","./utils/createChainableTypeChecker":"../../node_modules/prop-types-extra/lib/utils/createChainableTypeChecker.js"}],"../../node_modules/prop-types-extra/lib/deprecated.js":[function(require,module,exports) {
+},{"react":"../../node_modules/react/index.js","./utils/createChainableTypeChecker":"../../node_modules/prop-types-extra/lib/utils/createChainableTypeChecker.js"}],"../../node_modules/prop-types-extra/node_modules/warning/warning.js":[function(require,module,exports) {
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+'use strict';
+/**
+ * Similar to invariant but only logs a warning if the condition is not met.
+ * This can be used to log issues in development environments in critical
+ * paths. Removing the logging code for production environments will keep the
+ * same logic and follow the same code paths.
+ */
+
+var __DEV__ = "development" !== 'production';
+
+var warning = function () {};
+
+if (__DEV__) {
+  var printWarning = function printWarning(format, args) {
+    var len = arguments.length;
+    args = new Array(len > 1 ? len - 1 : 0);
+
+    for (var key = 1; key < len; key++) {
+      args[key - 1] = arguments[key];
+    }
+
+    var argIndex = 0;
+    var message = 'Warning: ' + format.replace(/%s/g, function () {
+      return args[argIndex++];
+    });
+
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+
+  warning = function (condition, format, args) {
+    var len = arguments.length;
+    args = new Array(len > 2 ? len - 2 : 0);
+
+    for (var key = 2; key < len; key++) {
+      args[key - 2] = arguments[key];
+    }
+
+    if (format === undefined) {
+      throw new Error('`warning(condition, format, ...args)` requires a warning ' + 'message argument');
+    }
+
+    if (!condition) {
+      printWarning.apply(null, [format].concat(args));
+    }
+  };
+}
+
+module.exports = warning;
+},{}],"../../node_modules/prop-types-extra/lib/deprecated.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -46880,7 +46867,7 @@ deprecated._resetWarned = _resetWarned;
 /* eslint-enable no-underscore-dangle */
 
 module.exports = exports['default'];
-},{"warning":"../../node_modules/warning/browser.js"}],"../../node_modules/dom-helpers/class/hasClass.js":[function(require,module,exports) {
+},{"warning":"../../node_modules/prop-types-extra/node_modules/warning/warning.js"}],"../../node_modules/dom-helpers/class/hasClass.js":[function(require,module,exports) {
 "use strict";
 
 exports.__esModule = true;
@@ -50899,26 +50886,26 @@ Overlay.propTypes = propTypes;
 Overlay.defaultProps = defaultProps;
 var _default = Overlay;
 exports.default = _default;
-},{"@babel/runtime-corejs2/helpers/esm/objectWithoutPropertiesLoose":"../../node_modules/@babel/runtime-corejs2/helpers/esm/objectWithoutPropertiesLoose.js","@babel/runtime-corejs2/helpers/esm/inheritsLoose":"../../node_modules/@babel/runtime-corejs2/helpers/esm/inheritsLoose.js","@babel/runtime-corejs2/helpers/esm/extends":"../../node_modules/@babel/runtime-corejs2/helpers/esm/extends.js","classnames":"../../node_modules/classnames/index.js","react":"../../node_modules/react/index.js","prop-types":"../../node_modules/prop-types/index.js","react-overlays/lib/Overlay":"../../node_modules/react-overlays/lib/Overlay.js","prop-types-extra/lib/elementType":"../../node_modules/prop-types-extra/lib/elementType.js","./Fade":"../../node_modules/react-bootstrap/es/Fade.js"}],"../../node_modules/core-js/library/modules/_is-array.js":[function(require,module,exports) {
+},{"@babel/runtime-corejs2/helpers/esm/objectWithoutPropertiesLoose":"../../node_modules/@babel/runtime-corejs2/helpers/esm/objectWithoutPropertiesLoose.js","@babel/runtime-corejs2/helpers/esm/inheritsLoose":"../../node_modules/@babel/runtime-corejs2/helpers/esm/inheritsLoose.js","@babel/runtime-corejs2/helpers/esm/extends":"../../node_modules/@babel/runtime-corejs2/helpers/esm/extends.js","classnames":"../../node_modules/classnames/index.js","react":"../../node_modules/react/index.js","prop-types":"../../node_modules/prop-types/index.js","react-overlays/lib/Overlay":"../../node_modules/react-overlays/lib/Overlay.js","prop-types-extra/lib/elementType":"../../node_modules/prop-types-extra/lib/elementType.js","./Fade":"../../node_modules/react-bootstrap/es/Fade.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_is-array.js":[function(require,module,exports) {
 // 7.2.2 IsArray(argument)
 var cof = require('./_cof');
 module.exports = Array.isArray || function isArray(arg) {
   return cof(arg) == 'Array';
 };
 
-},{"./_cof":"../../node_modules/core-js/library/modules/_cof.js"}],"../../node_modules/core-js/library/modules/es6.array.is-array.js":[function(require,module,exports) {
+},{"./_cof":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_cof.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/es6.array.is-array.js":[function(require,module,exports) {
 // 22.1.2.2 / 15.4.3.2 Array.isArray(arg)
 var $export = require('./_export');
 
 $export($export.S, 'Array', { isArray: require('./_is-array') });
 
-},{"./_export":"../../node_modules/core-js/library/modules/_export.js","./_is-array":"../../node_modules/core-js/library/modules/_is-array.js"}],"../../node_modules/core-js/library/fn/array/is-array.js":[function(require,module,exports) {
+},{"./_export":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_export.js","./_is-array":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_is-array.js"}],"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/fn/array/is-array.js":[function(require,module,exports) {
 require('../../modules/es6.array.is-array');
 module.exports = require('../../modules/_core').Array.isArray;
 
-},{"../../modules/es6.array.is-array":"../../node_modules/core-js/library/modules/es6.array.is-array.js","../../modules/_core":"../../node_modules/core-js/library/modules/_core.js"}],"../../node_modules/@babel/runtime-corejs2/core-js/array/is-array.js":[function(require,module,exports) {
+},{"../../modules/es6.array.is-array":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/es6.array.is-array.js","../../modules/_core":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/modules/_core.js"}],"../../node_modules/@babel/runtime-corejs2/core-js/array/is-array.js":[function(require,module,exports) {
 module.exports = require("core-js/library/fn/array/is-array");
-},{"core-js/library/fn/array/is-array":"../../node_modules/core-js/library/fn/array/is-array.js"}],"../../node_modules/react-bootstrap/es/OverlayTrigger.js":[function(require,module,exports) {
+},{"core-js/library/fn/array/is-array":"../../node_modules/@babel/runtime-corejs2/node_modules/core-js/library/fn/array/is-array.js"}],"../../node_modules/react-bootstrap/es/OverlayTrigger.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -55446,7 +55433,124 @@ function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./Accordion":"../../node_modules/react-bootstrap/es/Accordion.js","./Alert":"../../node_modules/react-bootstrap/es/Alert.js","./Badge":"../../node_modules/react-bootstrap/es/Badge.js","./Breadcrumb":"../../node_modules/react-bootstrap/es/Breadcrumb.js","./BreadcrumbItem":"../../node_modules/react-bootstrap/es/BreadcrumbItem.js","./Button":"../../node_modules/react-bootstrap/es/Button.js","./ButtonGroup":"../../node_modules/react-bootstrap/es/ButtonGroup.js","./ButtonToolbar":"../../node_modules/react-bootstrap/es/ButtonToolbar.js","./Carousel":"../../node_modules/react-bootstrap/es/Carousel.js","./CarouselItem":"../../node_modules/react-bootstrap/es/CarouselItem.js","./Checkbox":"../../node_modules/react-bootstrap/es/Checkbox.js","./Clearfix":"../../node_modules/react-bootstrap/es/Clearfix.js","./CloseButton":"../../node_modules/react-bootstrap/es/CloseButton.js","./ControlLabel":"../../node_modules/react-bootstrap/es/ControlLabel.js","./Col":"../../node_modules/react-bootstrap/es/Col.js","./Collapse":"../../node_modules/react-bootstrap/es/Collapse.js","./Dropdown":"../../node_modules/react-bootstrap/es/Dropdown.js","./DropdownButton":"../../node_modules/react-bootstrap/es/DropdownButton.js","./Fade":"../../node_modules/react-bootstrap/es/Fade.js","./Form":"../../node_modules/react-bootstrap/es/Form.js","./FormControl":"../../node_modules/react-bootstrap/es/FormControl.js","./FormGroup":"../../node_modules/react-bootstrap/es/FormGroup.js","./Glyphicon":"../../node_modules/react-bootstrap/es/Glyphicon.js","./Grid":"../../node_modules/react-bootstrap/es/Grid.js","./HelpBlock":"../../node_modules/react-bootstrap/es/HelpBlock.js","./Image":"../../node_modules/react-bootstrap/es/Image.js","./InputGroup":"../../node_modules/react-bootstrap/es/InputGroup.js","./Jumbotron":"../../node_modules/react-bootstrap/es/Jumbotron.js","./Label":"../../node_modules/react-bootstrap/es/Label.js","./ListGroup":"../../node_modules/react-bootstrap/es/ListGroup.js","./ListGroupItem":"../../node_modules/react-bootstrap/es/ListGroupItem.js","./Media":"../../node_modules/react-bootstrap/es/Media.js","./MenuItem":"../../node_modules/react-bootstrap/es/MenuItem.js","./Modal":"../../node_modules/react-bootstrap/es/Modal.js","./ModalBody":"../../node_modules/react-bootstrap/es/ModalBody.js","./ModalDialog":"../../node_modules/react-bootstrap/es/ModalDialog.js","./ModalFooter":"../../node_modules/react-bootstrap/es/ModalFooter.js","./ModalHeader":"../../node_modules/react-bootstrap/es/ModalHeader.js","./ModalTitle":"../../node_modules/react-bootstrap/es/ModalTitle.js","./Nav":"../../node_modules/react-bootstrap/es/Nav.js","./Navbar":"../../node_modules/react-bootstrap/es/Navbar.js","./NavbarBrand":"../../node_modules/react-bootstrap/es/NavbarBrand.js","./NavDropdown":"../../node_modules/react-bootstrap/es/NavDropdown.js","./NavItem":"../../node_modules/react-bootstrap/es/NavItem.js","./Overlay":"../../node_modules/react-bootstrap/es/Overlay.js","./OverlayTrigger":"../../node_modules/react-bootstrap/es/OverlayTrigger.js","./PageHeader":"../../node_modules/react-bootstrap/es/PageHeader.js","./PageItem":"../../node_modules/react-bootstrap/es/PageItem.js","./Pager":"../../node_modules/react-bootstrap/es/Pager.js","./Pagination":"../../node_modules/react-bootstrap/es/Pagination.js","./Panel":"../../node_modules/react-bootstrap/es/Panel.js","./PanelGroup":"../../node_modules/react-bootstrap/es/PanelGroup.js","./Popover":"../../node_modules/react-bootstrap/es/Popover.js","./ProgressBar":"../../node_modules/react-bootstrap/es/ProgressBar.js","./Radio":"../../node_modules/react-bootstrap/es/Radio.js","./ResponsiveEmbed":"../../node_modules/react-bootstrap/es/ResponsiveEmbed.js","./Row":"../../node_modules/react-bootstrap/es/Row.js","./SafeAnchor":"../../node_modules/react-bootstrap/es/SafeAnchor.js","./SplitButton":"../../node_modules/react-bootstrap/es/SplitButton.js","./Tab":"../../node_modules/react-bootstrap/es/Tab.js","./TabContainer":"../../node_modules/react-bootstrap/es/TabContainer.js","./TabContent":"../../node_modules/react-bootstrap/es/TabContent.js","./Table":"../../node_modules/react-bootstrap/es/Table.js","./TabPane":"../../node_modules/react-bootstrap/es/TabPane.js","./Tabs":"../../node_modules/react-bootstrap/es/Tabs.js","./Thumbnail":"../../node_modules/react-bootstrap/es/Thumbnail.js","./ToggleButton":"../../node_modules/react-bootstrap/es/ToggleButton.js","./ToggleButtonGroup":"../../node_modules/react-bootstrap/es/ToggleButtonGroup.js","./Tooltip":"../../node_modules/react-bootstrap/es/Tooltip.js","./Well":"../../node_modules/react-bootstrap/es/Well.js","./utils":"../../node_modules/react-bootstrap/es/utils/index.js"}],"components/Transaction.js":[function(require,module,exports) {
+},{"./Accordion":"../../node_modules/react-bootstrap/es/Accordion.js","./Alert":"../../node_modules/react-bootstrap/es/Alert.js","./Badge":"../../node_modules/react-bootstrap/es/Badge.js","./Breadcrumb":"../../node_modules/react-bootstrap/es/Breadcrumb.js","./BreadcrumbItem":"../../node_modules/react-bootstrap/es/BreadcrumbItem.js","./Button":"../../node_modules/react-bootstrap/es/Button.js","./ButtonGroup":"../../node_modules/react-bootstrap/es/ButtonGroup.js","./ButtonToolbar":"../../node_modules/react-bootstrap/es/ButtonToolbar.js","./Carousel":"../../node_modules/react-bootstrap/es/Carousel.js","./CarouselItem":"../../node_modules/react-bootstrap/es/CarouselItem.js","./Checkbox":"../../node_modules/react-bootstrap/es/Checkbox.js","./Clearfix":"../../node_modules/react-bootstrap/es/Clearfix.js","./CloseButton":"../../node_modules/react-bootstrap/es/CloseButton.js","./ControlLabel":"../../node_modules/react-bootstrap/es/ControlLabel.js","./Col":"../../node_modules/react-bootstrap/es/Col.js","./Collapse":"../../node_modules/react-bootstrap/es/Collapse.js","./Dropdown":"../../node_modules/react-bootstrap/es/Dropdown.js","./DropdownButton":"../../node_modules/react-bootstrap/es/DropdownButton.js","./Fade":"../../node_modules/react-bootstrap/es/Fade.js","./Form":"../../node_modules/react-bootstrap/es/Form.js","./FormControl":"../../node_modules/react-bootstrap/es/FormControl.js","./FormGroup":"../../node_modules/react-bootstrap/es/FormGroup.js","./Glyphicon":"../../node_modules/react-bootstrap/es/Glyphicon.js","./Grid":"../../node_modules/react-bootstrap/es/Grid.js","./HelpBlock":"../../node_modules/react-bootstrap/es/HelpBlock.js","./Image":"../../node_modules/react-bootstrap/es/Image.js","./InputGroup":"../../node_modules/react-bootstrap/es/InputGroup.js","./Jumbotron":"../../node_modules/react-bootstrap/es/Jumbotron.js","./Label":"../../node_modules/react-bootstrap/es/Label.js","./ListGroup":"../../node_modules/react-bootstrap/es/ListGroup.js","./ListGroupItem":"../../node_modules/react-bootstrap/es/ListGroupItem.js","./Media":"../../node_modules/react-bootstrap/es/Media.js","./MenuItem":"../../node_modules/react-bootstrap/es/MenuItem.js","./Modal":"../../node_modules/react-bootstrap/es/Modal.js","./ModalBody":"../../node_modules/react-bootstrap/es/ModalBody.js","./ModalDialog":"../../node_modules/react-bootstrap/es/ModalDialog.js","./ModalFooter":"../../node_modules/react-bootstrap/es/ModalFooter.js","./ModalHeader":"../../node_modules/react-bootstrap/es/ModalHeader.js","./ModalTitle":"../../node_modules/react-bootstrap/es/ModalTitle.js","./Nav":"../../node_modules/react-bootstrap/es/Nav.js","./Navbar":"../../node_modules/react-bootstrap/es/Navbar.js","./NavbarBrand":"../../node_modules/react-bootstrap/es/NavbarBrand.js","./NavDropdown":"../../node_modules/react-bootstrap/es/NavDropdown.js","./NavItem":"../../node_modules/react-bootstrap/es/NavItem.js","./Overlay":"../../node_modules/react-bootstrap/es/Overlay.js","./OverlayTrigger":"../../node_modules/react-bootstrap/es/OverlayTrigger.js","./PageHeader":"../../node_modules/react-bootstrap/es/PageHeader.js","./PageItem":"../../node_modules/react-bootstrap/es/PageItem.js","./Pager":"../../node_modules/react-bootstrap/es/Pager.js","./Pagination":"../../node_modules/react-bootstrap/es/Pagination.js","./Panel":"../../node_modules/react-bootstrap/es/Panel.js","./PanelGroup":"../../node_modules/react-bootstrap/es/PanelGroup.js","./Popover":"../../node_modules/react-bootstrap/es/Popover.js","./ProgressBar":"../../node_modules/react-bootstrap/es/ProgressBar.js","./Radio":"../../node_modules/react-bootstrap/es/Radio.js","./ResponsiveEmbed":"../../node_modules/react-bootstrap/es/ResponsiveEmbed.js","./Row":"../../node_modules/react-bootstrap/es/Row.js","./SafeAnchor":"../../node_modules/react-bootstrap/es/SafeAnchor.js","./SplitButton":"../../node_modules/react-bootstrap/es/SplitButton.js","./Tab":"../../node_modules/react-bootstrap/es/Tab.js","./TabContainer":"../../node_modules/react-bootstrap/es/TabContainer.js","./TabContent":"../../node_modules/react-bootstrap/es/TabContent.js","./Table":"../../node_modules/react-bootstrap/es/Table.js","./TabPane":"../../node_modules/react-bootstrap/es/TabPane.js","./Tabs":"../../node_modules/react-bootstrap/es/Tabs.js","./Thumbnail":"../../node_modules/react-bootstrap/es/Thumbnail.js","./ToggleButton":"../../node_modules/react-bootstrap/es/ToggleButton.js","./ToggleButtonGroup":"../../node_modules/react-bootstrap/es/ToggleButtonGroup.js","./Tooltip":"../../node_modules/react-bootstrap/es/Tooltip.js","./Well":"../../node_modules/react-bootstrap/es/Well.js","./utils":"../../node_modules/react-bootstrap/es/utils/index.js"}],"components/App.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _reactRouterDom = require("react-router-dom");
+
+var _logo = _interopRequireDefault(require("../assets/logo.jpg"));
+
+var _reactBootstrap = require("react-bootstrap");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var App =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(App, _Component);
+
+  function App() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    var _temp;
+
+    _classCallCheck(this, App);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(App)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.state = {
+      walletInfo: {}
+    }, _this.updatebanker = function (event) {
+      _this.setState({
+        banker: event.target.value
+      });
+    }, _temp));
+  }
+
+  _createClass(App, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      fetch('http://localhost:1234/api/wallet-info').then(function (response) {
+        return response.json();
+      }).then(function (json) {
+        return _this2.setState({
+          walletInfo: json
+        });
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this$state$walletInf = this.state.walletInfo,
+          address = _this$state$walletInf.address,
+          balance = _this$state$walletInf.balance;
+      return _react.default.createElement("div", {
+        className: "App"
+      }, _react.default.createElement("img", {
+        className: "logo",
+        src: _logo.default
+      }), _react.default.createElement("br", null), _react.default.createElement("div", null, "Welcome to the ChequeClerance Network..."), _react.default.createElement("br", null), _react.default.createElement(_reactBootstrap.FormGroup, null, _react.default.createElement(_reactBootstrap.FormControl, {
+        input: "text",
+        placeholder: "Banker-ID",
+        value: this.state.banker,
+        onChange: this.banker
+      })), _react.default.createElement("div", null, _react.default.createElement(_reactBootstrap.Button, {
+        bsStyle: "danger",
+        onClick: this.App
+      }, "Submit")), _react.default.createElement("div", null, _react.default.createElement(_reactRouterDom.Link, {
+        to: "/blocks"
+      }, "Blocks")), _react.default.createElement("div", null, _react.default.createElement(_reactRouterDom.Link, {
+        to: "/conduct-transaction"
+      }, "Enter Cheque Info "))); //<div><Link to='/transaction-pool'>Transaction Pool</Link></div>
+      //<br />
+      //<div className='WalletInfo'>
+      // <div>Address: {address}</div>
+      //<div>Balance: {balance}</div>
+      //</div>
+    }
+  }]);
+
+  return App;
+}(_react.Component);
+
+var _default = App;
+exports.default = _default;
+},{"react":"../../node_modules/react/index.js","react-router-dom":"../../node_modules/react-router-dom/es/index.js","../assets/logo.jpg":"assets/logo.jpg","react-bootstrap":"../../node_modules/react-bootstrap/es/index.js"}],"components/Transaction.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -55461,7 +55565,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Transaction = function Transaction(_ref) {
   var transaction = _ref.transaction;
   var input = transaction.input,
-      outputMap = transaction.outputMap;
+      outputMap = transaction.outputMap,
+      finInstNum = transaction.finInstNum,
+      accountId = transaction.accountId,
+      transNum = transaction.transNum,
+      date = transaction.date;
   var recipients = Object.keys(outputMap);
   return _react.default.createElement("div", {
     className: "Transaction"
@@ -55469,7 +55577,15 @@ var Transaction = function Transaction(_ref) {
     return _react.default.createElement("div", {
       key: recipient
     }, "To: ", "".concat(recipient.substring(0, 20), "..."), " | Sent: ", outputMap[recipient]);
-  }));
+  }), _react.default.createElement("div", {
+    key: finInstNum
+  }, " finInstNum: ", updatefinInstNum), _react.default.createElement("div", {
+    key: accountId
+  }, " accountId: ", updateaccountId), _react.default.createElement("div", {
+    key: transNum
+  }, " transNum: ", updatetransNum), _react.default.createElement("div", {
+    key: date
+  }, " date: ", updatedate));
 };
 
 var _default = Transaction;
@@ -55774,6 +55890,10 @@ function (_Component) {
     return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(ConductTransaction)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.state = {
       recipient: '',
       amount: 0,
+      finInstNum: '',
+      transNum: '',
+      accountID: '',
+      date: '',
       knownAddresses: []
     }, _this.updateRecipient = function (event) {
       _this.setState({
@@ -55783,18 +55903,42 @@ function (_Component) {
       _this.setState({
         amount: Number(event.target.value)
       });
+    }, _this.updateFinInstNum = function (event) {
+      _this.setState({
+        finInstNum: event.target.value
+      });
+    }, _this.updateTransNum = function (event) {
+      _this.setState({
+        transNum: event.target.value
+      });
+    }, _this.updateAccountId = function (event) {
+      _this.setState({
+        accountId: event.target.value
+      });
+    }, _this.updateDate = function (event) {
+      _this.setState({
+        date: event.target.value
+      });
     }, _this.conductTransaction = function () {
       var _this$state = _this.state,
           recipient = _this$state.recipient,
-          amount = _this$state.amount;
-      fetch("".concat(document.location.origin, "/api/transact"), {
+          amount = _this$state.amount,
+          finInstNum = _this$state.finInstNum,
+          accountId = _this$state.accountId,
+          transNum = _this$state.transNum,
+          date = _this$state.date;
+      fetch('http://localhost:1234/api/transaction', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           recipient: recipient,
-          amount: amount
+          amount: amount,
+          finInstNum: finInstNum,
+          accountId: accountId,
+          transNum: transNum,
+          date: date
         })
       }).then(function (response) {
         return response.json();
@@ -55811,7 +55955,7 @@ function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      fetch("".concat(document.location.origin, "/api/known-addresses")).then(function (response) {
+      fetch('http://localhost:1234//api/known-addresses').then(function (response) {
         return response.json();
       }).then(function (json) {
         return _this2.setState({
@@ -55826,7 +55970,7 @@ function (_Component) {
         className: "ConductTransaction"
       }, _react.default.createElement(_reactRouterDom.Link, {
         to: "/"
-      }, "Home"), _react.default.createElement("h3", null, "Conduct a Transaction"), _react.default.createElement("br", null), _react.default.createElement("h4", null, "Known Addresses"), this.state.knownAddresses.map(function (knownAddress) {
+      }, "Home"), _react.default.createElement("h3", null, "Conduct a Transaction"), _react.default.createElement("br", null), this.state.knownAddresses.map(function (knownAddress) {
         return _react.default.createElement("div", {
           key: knownAddress
         }, _react.default.createElement("div", null, knownAddress), _react.default.createElement("br", null));
@@ -55840,6 +55984,26 @@ function (_Component) {
         placeholder: "amount",
         value: this.state.amount,
         onChange: this.updateAmount
+      })), _react.default.createElement(_reactBootstrap.FormGroup, null, _react.default.createElement(_reactBootstrap.FormControl, {
+        input: "text",
+        placeholder: "financial institution number",
+        value: this.state.finInstNum,
+        onChange: this.updateFinInstNum
+      })), _react.default.createElement(_reactBootstrap.FormGroup, null, _react.default.createElement(_reactBootstrap.FormControl, {
+        input: "text",
+        placeholder: "transit number",
+        value: this.state.transNum,
+        onChange: this.updateTransNum
+      })), _react.default.createElement(_reactBootstrap.FormGroup, null, _react.default.createElement(_reactBootstrap.FormControl, {
+        input: "text",
+        placeholder: "account id",
+        value: this.state.accountId,
+        onChange: this.updateAccountId
+      })), _react.default.createElement(_reactBootstrap.FormGroup, null, _react.default.createElement(_reactBootstrap.FormControl, {
+        input: "date",
+        placeholder: "Date",
+        value: this.state.date,
+        onChange: this.updateDate
       })), _react.default.createElement("div", null, _react.default.createElement(_reactBootstrap.Button, {
         bsStyle: "danger",
         onClick: this.conductTransaction
@@ -56117,7 +56281,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65236" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50347" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
