@@ -3,17 +3,29 @@ const { verifySignature } = require('../util');
 const { REWARD_INPUT, MINING_REWARD } = require('../config');
 
 class Transaction {
-  constructor({ senderWallet, recipient, amount, outputMap, input }) {
+  constructor({ senderWallet, recipient, amount,finInstNum,accountId,outputMap, input, datamap }) {
+    console.log(finInstNum);
+    console.log(accountId);
     this.id = uuid();
     this.outputMap = outputMap || this.createOutputMap({ senderWallet, recipient, amount });
+    this.datamap = datamap || this.createDataMap({finInstNum})
     this.input = input || this.createInput({ senderWallet, outputMap: this.outputMap });
   }
+  createDataMap({ finInstNum }) {
+    const datamap = {};
 
+    datamap['finInstNum'] = finInstNum;
+    
+
+    return datamap;
+  }
   createOutputMap({ senderWallet, recipient, amount }) {
     const outputMap = {};
 
     outputMap[recipient] = amount;
     outputMap[senderWallet.publicKey] = senderWallet.balance - amount;
+    //outputMap['finInstNum'] = finInstNum;
+    
 
     return outputMap;
   }

@@ -8,7 +8,7 @@ class ConductTransaction extends Component {
    state = { recipient: '', amount: 0,finInstNum: '',transNum: '', accountID:'',date: '', knownAddresses: [] };
 
   componentDidMount() {
-      fetch('http://localhost:1234//api/known-addresses')
+      fetch(`${document.location.origin}/api/known-addresses`)
       .then(response => response.json())
       .then(json => this.setState({ knownAddresses: json }));
   }
@@ -21,9 +21,9 @@ class ConductTransaction extends Component {
     this.setState({ amount: Number(event.target.value) });
   }
 
+  
   updateFinInstNum = event => {
     this.setState({ finInstNum: event.target.value });
-
   }
   updateTransNum = event => {
      this.setState({ transNum: event.target.value });
@@ -35,10 +35,11 @@ class ConductTransaction extends Component {
       this.setState({ date: event.target.value });
     }
 
+ 
 
   conductTransaction = () => {
     const { recipient, amount, finInstNum,accountId,transNum, date } = this.state;
-     fetch('http://localhost:1234/api/transaction', {
+     fetch(`${document.location.origin}/api/transact`, {
 
       method: 'POST',
 
@@ -62,20 +63,23 @@ class ConductTransaction extends Component {
 
   render() {
 
+   
     return (
 
       <div className='ConductTransaction'>
 
         <Link to='/'>Home</Link>
-        <h3>Conduct a Transaction</h3>  
+        <h3>Conduct a Transaction</h3> 
         <br />
         {
            this.state.knownAddresses.map(knownAddress => {
              return (
+
               <div key={knownAddress}>
                 <div>{knownAddress}</div>
                 <br />
                 </div>
+                
                 )
               })
         }
