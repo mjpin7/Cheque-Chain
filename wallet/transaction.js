@@ -3,10 +3,22 @@ const { verifySignature } = require('../util');
 const { REWARD_INPUT, MINING_REWARD } = require('../config');
 
 class Transaction {
-  constructor({ senderWallet, recipient, amount, outputMap, input }) {
+  constructor({ senderWallet, recipient, amount, outputMap, input, finInstNum, accountId, tranNum, date, datamap }) {
     this.id = uuid();
     this.outputMap = outputMap || this.createOutputMap({ senderWallet, recipient, amount });
+    this.datamap = datamap || this.createDataMap({ finInstNum, accountId, tranNum, date })
     this.input = input || this.createInput({ senderWallet, outputMap: this.outputMap });
+  }
+
+  createDataMap({ finInstNum, accountId, tranNum, date }) {
+    const datamap = {};
+
+    datamap['finInstNum'] = finInstNum;
+    datamap['accountId'] = accountId;
+    datamap['tranNum'] = tranNum;
+    datamap['date'] = date;
+
+    return datamap;
   }
 
   createOutputMap({ senderWallet, recipient, amount }) {
@@ -27,7 +39,7 @@ class Transaction {
     };
   }
 
-  update({ senderWallet, recipient, amount }) {
+  update({ senderWallet, recipient, amount, finInstNum, accountId, tranNum, date }) {
     if (amount > this.outputMap[senderWallet.publicKey]) {
       throw new Error('Amount exceeds balance');
     }
@@ -42,6 +54,8 @@ class Transaction {
       this.outputMap[senderWallet.publicKey] - amount;
 
     this.input = this.createInput({ senderWallet, outputMap: this.outputMap });
+
+    this.datamap = this.createDataMap({ finInstNum, accountId, tranNum, date });
   }
 
   static validTransaction(transaction) {
@@ -63,12 +77,12 @@ class Transaction {
     return true;
   }
 
-  static rewardTransaction({ minerWallet }) {
-    return new this({
-      input: REWARD_INPUT,
-      outputMap: { [minerWallet.publicKey]: MINING_REWARD }
-    });
-  }
+  // static rewardTransaction({ minerWallet }) {
+  //   return new this({
+  //     input: REWARD_INPUT,
+  //     outputMap: { [minerWallet.publicKey]: MINING_REWARD }
+  //   });
+  // }
 }
 
 module.exports = Transaction;
