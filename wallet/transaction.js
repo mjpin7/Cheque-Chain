@@ -3,20 +3,26 @@ const { verifySignature } = require('../util');
 const { REWARD_INPUT, MINING_REWARD } = require('../config');
 
 class Transaction {
-  constructor({ senderWallet, recipient, amount, outputMap, input, finInstNum, accountId, tranNum, date, datamap }) {
+  constructor({ senderWallet, recipient, amount, outputMap, input, finInstNum, accountId, tranNum, date, datamap, recFinInstNum, postDate }) {
     this.id = uuid();
-    this.outputMap = outputMap || this.createOutputMap({ senderWallet, recipient, amount });
-    this.datamap = datamap || this.createDataMap({ finInstNum, accountId, tranNum, date })
+    this.outputMap = outputMap || this.createOutputMap({ senderWallet, recipient: recFinInstNum, amount: postDate ? 0 : amount });
+    this.datamap = datamap || this.createDataMap({ finInstNum, accountId, tranNum, date, recipient, recFinInstNum, amount, postDate })
     this.input = input || this.createInput({ senderWallet, outputMap: this.outputMap });
   }
 
-  createDataMap({ finInstNum, accountId, tranNum, date }) {
-    const datamap = {};
+  createDataMap({ finInstNum, accountId, tranNum, date, recipient, amount, postDate }) {
+    const datamap = [];
 
-    datamap['finInstNum'] = finInstNum;
-    datamap['accountId'] = accountId;
-    datamap['tranNum'] = tranNum;
-    datamap['date'] = date;
+    const entry = {
+      'fromFinInstNum': finInstNum, 
+      'fromAccountId': accountId, 
+      'fromTranNum': tranNum,
+      'toAccountId': recipient,
+      'amount': amount,
+      'date': date,
+      'postDate': postDate
+    };
+    datamap.push(entry);
 
     return datamap;
   }
@@ -39,23 +45,37 @@ class Transaction {
     };
   }
 
-  update({ senderWallet, recipient, amount, finInstNum, accountId, tranNum, date }) {
+  update({ senderWallet, recipient, amount, finInstNum, accountId, tranNum, date, recFinInstNum, postDate }) {
     if (amount > this.outputMap[senderWallet.publicKey]) {
       throw new Error('Amount exceeds balance');
     }
 
-    if (!this.outputMap[recipient]) {
-      this.outputMap[recipient] = amount;
+    const newAmount = (postDate ? 0 : amount);
+
+    if (!this.outputMap[recFinInstNum]) {
+      this.outputMap[recFinInstNum] = newAmount;
     } else {
-      this.outputMap[recipient] = this.outputMap[recipient] + amount;
+      this.outputMap[recFinInstNum] = this.outputMap[recFinInstNum] + newAmount;
     }
 
     this.outputMap[senderWallet.publicKey] =
-      this.outputMap[senderWallet.publicKey] - amount;
+      this.outputMap[senderWallet.publicKey] - newAmount;
 
     this.input = this.createInput({ senderWallet, outputMap: this.outputMap });
 
-    this.datamap = this.createDataMap({ finInstNum, accountId, tranNum, date });
+    const entry = {
+      'fromFinInstNum': finInstNum, 
+      'fromAccountId': accountId, 
+      'fromTranNum': tranNum,
+      'toAccountId': recipient,
+      'amount': amount,
+      'date': date,
+      'postDate': postDate
+    }
+
+    this.datamap.push(entry);
+
+    // this.datamap = this.createDataMap({ finInstNum, accountId, tranNum, date }); push onto the datamap list here
   }
 
   static validTransaction(transaction) {

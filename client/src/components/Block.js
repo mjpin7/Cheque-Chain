@@ -3,13 +3,13 @@ import { Button } from 'react-bootstrap';
 import Transaction from './Transaction';
 
 class Block extends Component {
-  state = { displayTransaction: false };
+  state = { displayData: false };
 
-  toggleTransaction = () => {
-    this.setState({ displayTransaction: !this.state.displayTransaction });
+  toggleData = () => {
+    this.setState({ displayData: !this.state.displayData });
   }
 
-  get displayTransaction() {
+  get displayData() {
     const { data } = this.props.block;
 
     const stringifiedData = JSON.stringify(data);
@@ -18,22 +18,21 @@ class Block extends Component {
       `${stringifiedData.substring(0, 35)}...` :
       stringifiedData;
 
-    if (this.state.displayTransaction) {
+    if (this.state.displayData) {
+      var dataKey = Object.keys(data);
       return (
         <div>
+          <div>Data: </div>
           {
-            data.map(transaction => (
-              <div key={transaction.id}>
-                <hr />
-                <Transaction transaction={transaction} />
-              </div>
+            Object.keys(data).map(key => (
+              <div>{key}: {JSON.stringify(data[key])}</div>
             ))
           }
           <br />
           <Button
             bsStyle="danger"
             bsSize="small"
-            onClick={this.toggleTransaction}
+            onClick={this.toggleData}
           >
             Show Less
           </Button>
@@ -47,7 +46,7 @@ class Block extends Component {
         <Button
           bsStyle="danger"
           bsSize="small"
-          onClick={this.toggleTransaction}
+          onClick={this.toggleData}
         >
           Show More
         </Button>
@@ -64,7 +63,7 @@ class Block extends Component {
       <div className='Block'>
         <div>Hash: {hashDisplay}</div>
         <div>Timestamp: {new Date(timestamp).toLocaleString()}</div>
-        {this.displayTransaction}
+        {this.displayData}
       </div>
     );
   }

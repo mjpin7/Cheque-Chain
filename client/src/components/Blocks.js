@@ -25,7 +25,12 @@ class Blocks extends Component {
       
     return (
       <div>
-        <div><Link to='/index'>Home</Link></div>
+        <div><Link to={{
+          pathname: '/index',
+          state: {
+           name: this.state.name,
+           accountId: this.state.accountId 
+          }}}>Home</Link></div>
         <h3>Blocks</h3>
         <div>
           {

@@ -8,19 +8,20 @@ import history from '../history';
 const cookies = new Cookies();
 
 class App extends Component {
-  state = { walletInfo: {}, name: "", accountId: "" };
+  state = { walletInfo: {}, name: "", accountId: "", finInstNum: "" };
   componentDidMount() {
     fetch(`${document.location.origin}/api/wallet-info`)
       .then(response => response.json())
       .then(json => this.setState({ walletInfo: json }));
 
-    this.setState({name: cookies.get('name'), accountId: cookies.get('accountId')});
+    this.setState({name: cookies.get('name'), accountId: cookies.get('accountId'), finInstNum: cookies.get('finInstNum')});
   }
 
   // Function to get rid of cookies that have been set and redirect user to login page (logout)
   logout = () => {
     cookies.remove('name');
     cookies.remove('accountId');
+    cookies.remove('finInstNum');
     history.push('/');
   }
 
@@ -29,7 +30,7 @@ class App extends Component {
 
     return (
       <div className='App'>
-        <img className='logo' src={logo}></img>
+        {/* <img className='logo' src={logo}></img> */}
         <br />
         <div>
           Welcome to Cheque Chain!
@@ -47,8 +48,8 @@ class App extends Component {
         <br /><br/><br/>
         <div className='Info'>
           <div>Name: {this.state.name}</div>
-          <div>Address: {address}</div>
           <div>Account ID: {this.state.accountId}</div>
+          <div>Financial Institution Number: {this.state.finInstNum}</div>
         </div>
       </div>
     );

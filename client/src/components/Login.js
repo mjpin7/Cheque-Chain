@@ -28,6 +28,7 @@ class Login extends Component {
     this.state = {
       name: cookies.get('name') || "",
       accountId: "",
+      finInstNum: "",
       formErrors: {
         name: "",
         accountId: ""
@@ -43,6 +44,7 @@ class Login extends Component {
         --SUBMITTING--
         Name: ${this.state.name}
         Account Id: ${this.state.accountId}
+        Financial Institution Number: ${this.state.finInstNum}
       `);
       
       
@@ -63,12 +65,14 @@ class Login extends Component {
     this.setState({ accountId: event.target.value })
   }
 
+  updateFinInstNum = event => {
+    cookies.set('finInstNum', event.target.value, { path: '/' });
+    this.setState({ finInstNum: event.target.value })
+  }
+
   renderRedirect = () => {
       if(this.state.redirect) {
-          return (<Redirect to={{
-            pathname: '/index',
-            state: { name: this.state.name, accountId: this.state.accountId }
-        }} />)
+          return (<Redirect to='/index' />)
       }
       else {
         return (<div>
@@ -90,6 +94,15 @@ class Login extends Component {
                             placeholder='Account Id'
                             value={this.state.accountId}
                             onChange={this.updateAccountId}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <ControlLabel>Financial Institution Number</ControlLabel>
+                        <FormControl
+                            input='text'
+                            placeholder='financial institution number'
+                            value={this.state.finInstNum}
+                            onChange={this.updateFinInstNum}
                         />
                     </FormGroup>
                     <div>

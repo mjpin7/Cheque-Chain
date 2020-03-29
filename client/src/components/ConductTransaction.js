@@ -9,14 +9,14 @@ const cookies = new Cookies();
 // import { DatePicker } from "react-bootstrap-date-picker";
 
 class ConductTransaction extends Component {
-  state = { recipient: '', finInstNum: '', tranNum: '', accountId: '' , amount: 0, date: '', sender: '', senderAccId: ''};
+  state = { sender: '', finInstNum: '', tranNum: '', accountId: '' , amount: 0, date: '', recipient: '', recAccId: '', recFinInstNum: '', senderError: '', finInstNumError: '', tranNumError: '', accountIdError: ''};
 
   componentDidMount() {
     fetch(`${document.location.origin}/api/known-addresses`)
       .then(response => response.json())
       .then(json => this.setState({ knownAddresses: json }));
     
-      this.setState({sender: cookies.get('name'), senderAccId: cookies.get('accountId')});
+      this.setState({recAccId: cookies.get('accountId'), recipient: cookies.get('name'), recFinInstNum: cookies.get('finInstNum')});
   }
 
   updateFinInstNum = event => {
@@ -24,7 +24,7 @@ class ConductTransaction extends Component {
   }
 
   updatetranNum = event => {
-    this.setState({ tranNum: event.target.value });
+    this.setState({tranNum: event.target.value});
   }
 
   updateAccountId = event => {
@@ -32,11 +32,11 @@ class ConductTransaction extends Component {
   }
 
   updateAmount = event => {
-    this.setState({ amount: Number(event.target.value) });
+    this.setState({amount: Number(event.target.value)});
   }
 
-  updateRecipient = event => {
-    this.setState({ recipient: event.target.value });
+  updateSender = event => {
+    this.setState({ sender: event.target.value });
   }
 
   updateDate = event => {
@@ -45,12 +45,45 @@ class ConductTransaction extends Component {
     });
   }
 
-  callTransact({recipient, amount, finInstNum, accountId, tranNum, date}) {
+  validate = () => {
+    let isError = false;
+
+    if(!this.state.sender){
+      isError = true;
+      this.setState({ senderError: "Enter recipient name" });
+    }
+
+    if(!this.state.sender.match(/^[a-zA-Z ]*$/)){
+      isError = true;
+      this.setState({ senderError: "Enter only letters" });
+    }
+
+    if(!this.state.finInstNum){
+      isError = true;
+      this.setState({ finInstNumError: "Enter financial instition No" });
+    }
+
+    if(!this.state.tranNum){
+      isError = true;
+      this.setState({ tranNumError: "Enter transit No" });
+    }
+
+
+   if(!this.state.accountId){
+      isError = true;
+      this.setState({ accountIdError: "Enter accountId No" });
+    }
+
+    return isError;
+  };
+
+
+  callTransact({recipient, amount, finInstNum, accountId, tranNum, date, recFinInstNum, postDate}) {
     // API call to transact to create a transaction
     fetch(`${document.location.origin}/api/transact`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ recipient, amount, finInstNum, accountId, tranNum, date })
+      body: JSON.stringify({ recipient, amount, finInstNum, accountId, tranNum, date, recFinInstNum, postDate })
       }).then(response => response.json())
       .then(json => {
 
@@ -60,42 +93,60 @@ class ConductTransaction extends Component {
   }
 
   conductTransaction = () => {
-    const { recipient, finInstNum, tranNum, accountId, amount, date } = this.state;
+    const error = this.validate();
+    let errors = [
+      this.state.senderError,
+      this.state.finInstNumError,
+      this.state.tranNumError,
+      this.state.accountIdError
+    ];
 
-    // Check if the cheque is valid through second node (second node calls api)
-    fetch('http://3.12.159.16:3000', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json'},
-      body: JSON.stringify({ amount, finInstNum, tranNum, accountId, date })
-    }).then(response => response.json())
-      .then(resp => {
+    console.log(this.state.senderError);
 
-        // If the response says its processed, then date is correct
-        if (resp.processed == true) {
+    if(error) {
+      alert("Fail, please enter valid information");
+      this.setState({recipient: '', finInstNum: '', tranNum: '', accountId: '', amount: 0, date: '', senderError: '', finInstNumError: '',tranNumError:'', accountIdError: ''});
+    }
+    else{
+      const { sender, finInstNum, tranNum, accountId, amount, date, recFinInstNum } = this.state;
 
-          // This is when account is not valid
-          if(resp.accountvalid == false) {
-            alert("Account not valid");
-            this.callTransact({recipient, amount: 0, finInstNum, accountId, tranNum, date});
+      // Check if the cheque is valid through second node (second node calls api)
+      fetch('http://3.12.159.16:3000', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify({ amount, finInstNum, tranNum, accountId, date })
+      }).then(response => response.json())
+        .then(resp => {
+
+          // If the response says its processed, then date is correct
+          if (resp.processed == true) {
+
+            // This is when account is not valid
+            if(resp.accountvalid == false) {
+              alert("Account not valid");
+              this.callTransact({recipient: this.state.recAccId, accountId, amount: 0, finInstNum, tranNum, date, recFinInstNum, postDate: false });
+            }
+            // This is when amount is not valid
+            else if(resp.amountvalid == false) {
+              alert("Non sufficient funds");
+              this.callTransact({recipient: this.state.recAccId, accountId, amount: 0, finInstNum, tranNum, date, recFinInstNum, postDate: false });
+            }
+            // This is when all conditions are good, call transact
+            else {
+              alert("Transaction cleared");
+              this.callTransact({recipient: this.state.recAccId, accountId, amount, finInstNum, tranNum, date, recFinInstNum, postDate: false});
+            }
           }
-          // This is when amount is not valid
-          else if(resp.amountvalid == false) {
-            alert("Non sufficient funds");
-            this.callTransact({recipient, amount: 0, finInstNum, accountId, tranNum, date});
-          }
-          // This is when all conditions are good, call transact
+          // When cheque is post dated
           else {
-            alert("Transaction cleared");
-            this.callTransact({recipient, amount, finInstNum, accountId, tranNum, date});
+            alert("Will be processed on " + resp.date);
+            this.callTransact({recipient: this.state.recAccId, accountId, amount, finInstNum, tranNum, date, recFinInstNum, postDate: true});
           }
-        }
-        // When cheque is post dated
-        else {
-          alert("Will be processed on" + resp.date);
-        }
-      }).catch((error) => {
-          console.log(error);
+        }).catch((error) => {
+            console.log(error);
       });
+    }
+    
   }
 
   render() {
@@ -104,19 +155,20 @@ class ConductTransaction extends Component {
         <Link to='/index'>Home</Link>
         <h3>Conduct a Transaction</h3>
         <br />
-        <h4>Sender Information</h4>
+        <h4>Recipient Information</h4>
         <div className='Info'>
-          <div>Name: {this.state.sender}</div>
-          <div>Account ID: {this.state.senderAccId}</div>
+          <div>Name: {this.state.recipient}</div>
+          <div>Account ID: {this.state.recAccId}</div>
+          <div>Financial Institution Number: {this.state.recFinInstNum}</div>
         </div>
         <br />
         <FormGroup>
-          <ControlLabel>Recipient</ControlLabel>
+          <ControlLabel>Sender</ControlLabel>
           <FormControl
             input='text'
-            placeholder='recipient'
-            value={this.state.recipient}
-            onChange={this.updateRecipient}
+            placeholder='sender'
+            value={this.state.sender}
+            onChange={this.updateSender}
           />
         </FormGroup>
         <FormGroup>
