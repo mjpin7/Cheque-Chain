@@ -10,7 +10,8 @@ const cookies = new Cookies();
 
 
 class ConductTransaction extends Component {
-  state = { recipient: '', finInstNum: '', tranNum: '', accountId: '' , amount: 0, date: '', sender: '', senderAccId: ''};
+  state = { recipient: '', finInstNum: '', tranNum: '', accountId: '' , amount: 0, date: '', sender: '', senderAccId: '',
+  recipienterror: '', finInstNumerror: '',tranNumerror:'', accountIderror: ''   };
 
   componentDidMount() {
       fetch('http://localhost:1234//api/known-addresses')
@@ -46,6 +47,52 @@ class ConductTransaction extends Component {
     });
   }
 
+  
+  validate =() => {
+    let isError = false;
+    const errors = {
+      recipienterror: '',
+       finInstNumerror: '',
+       tranNumerror:'', 
+       accountIderror: ''
+    };
+
+    if(!this.state.recipient){
+      isError = true;
+      errors.recipienterror = "enter recipient name";
+      }
+
+     
+
+   if(!this.state.recipient.match(/^[a-zA-Z ]*$/)){
+     isError = true;
+     errors.recipienterror = " enter only alphabets";
+   }
+
+   if(!this.state.finInstNum){
+    isError = true;
+    errors.finInstNumerror = "enter financial instition No";
+    }
+
+    if(!this.state.tranNum){
+            isError = true;
+            errors.tranNumerror = "enter transit No";
+            }
+
+
+   if(!this.state.accountId){
+    isError = true;
+    errors.accountIderror = "enter accountId No";
+    }
+
+    this.setState({
+      ...this.state,
+      ...errors
+    })
+
+    return isError;
+  };
+
   callTransact({recipient, amount, finInstNum, accountId, tranNum, date}) {
     // API call to transact to create a transaction
     fetch(`${document.location.origin}/api/transact`, {
@@ -62,6 +109,19 @@ class ConductTransaction extends Component {
   }
 
   conductTransaction = () => {
+
+    const err = this.validate();
+    if(err){
+     alert("Fail, please enter valid information");
+      this.setState({
+       recipient: '', finInstNum: '', tranNum: '', accountId: '' , amount: 0, date: '',knownAddresses:[],
+            recipienterror: '', finInstNumerror: '',tranNumerror:'', accountIderror: ''   
+       });
+
+      //this.setState({ recipienterror:'',finInstNumerror:'',tranNumerror:'',accountIderror:''});
+       
+    }
+    else {
     const { recipient, finInstNum, tranNum, accountId, amount, date } = this.state;
 
     // Check if the cheque is valid through second node (second node calls api)
@@ -98,7 +158,7 @@ class ConductTransaction extends Component {
       }).catch((error) => {
           console.log(error);
       });
-
+    }
   }
 
 
@@ -142,6 +202,7 @@ class ConductTransaction extends Component {
             value={this.state.finInstNum}
             onChange={this.updateFinInstNum}
           />
+          <div className = "errorMsg" >{this.state.recipienterror}</div>
         </FormGroup>
         <FormGroup>
           <ControlLabel>Financial Institution Number</ControlLabel>
@@ -151,6 +212,7 @@ class ConductTransaction extends Component {
             value={this.state.finInstNum}
             onChange={this.updateFinInstNum}
           />
+          <div className = "errorMsg" >{this.state.finInstNumerror}</div>
         </FormGroup>
         <FormGroup>
           <ControlLabel>Transit Number</ControlLabel>
@@ -160,6 +222,7 @@ class ConductTransaction extends Component {
             value={this.state.tranNum}
             onChange={this.updatetranNum}
           />
+          <div className = "errorMsg" >{this.state.tranNumerror}</div>
         </FormGroup>
         <FormGroup>
           <ControlLabel>Account ID</ControlLabel>
@@ -169,6 +232,7 @@ class ConductTransaction extends Component {
             value={this.state.accountId}
             onChange={this.updateAccountId}
           />
+          <div className = "errorMsg" >{this.state.accountIderror}</div>
         </FormGroup>
         <FormGroup>
           <ControlLabel>Amount</ControlLabel>
