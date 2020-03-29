@@ -1,59 +1,102 @@
 import React, { Component } from 'react';
-import { FormGroup, FormControl, Button } from 'react-bootstrap';
+import { FormGroup, FormControl, Button, ControlLabel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import history from '../history';
+import Cookies from 'universal-cookie';   
+
+const cookies = new Cookies();
+
+// import { DatePicker } from "react-bootstrap-date-picker";
 
 
 class ConductTransaction extends Component {
-   state = { recipient: '', amount: 0,finInstNum: '',transNum: '', accountID:'',date: '', knownAddresses: [] };
+  state = { recipient: '', finInstNum: '', tranNum: '', accountId: '' , amount: 0, date: '', sender: '', senderAccId: ''};
 
   componentDidMount() {
       fetch('http://localhost:1234//api/known-addresses')
       .then(response => response.json())
       .then(json => this.setState({ knownAddresses: json }));
+    
+      this.setState({sender: cookies.get('name'), senderAccId: cookies.get('accountId')});
   }
 
-  updateRecipient = event => {
-    this.setState({ recipient: event.target.value });
+  updateFinInstNum = event => {
+    this.setState({ finInstNum: event.target.value });
+  }
+
+  updatetranNum = event => {
+    this.setState({ tranNum: event.target.value });
+  }
+
+  updateAccountId = event => {
+    this.setState({ accountId: event.target.value });
   }
 
   updateAmount = event => {
     this.setState({ amount: Number(event.target.value) });
   }
 
-  updateFinInstNum = event => {
-    this.setState({ finInstNum: event.target.value });
-
+  updateRecipient = event => {
+    this.setState({ recipient: event.target.value });
   }
-  updateTransNum = event => {
-     this.setState({ transNum: event.target.value });
-    }
-  updateAccountId = event => {
-      this.setState({ accountId: event.target.value });
-    }
+
   updateDate = event => {
-      this.setState({ date: event.target.value });
-    }
+    this.setState({
+      date: event.target.value, // YYYY-MM-DD
+    });
+  }
 
-
-  conductTransaction = () => {
-    const { recipient, amount, finInstNum,accountId,transNum, date } = this.state;
-     fetch('http://localhost:1234/api/transaction', {
-
+  callTransact({recipient, amount, finInstNum, accountId, tranNum, date}) {
+    // API call to transact to create a transaction
+    fetch(`${document.location.origin}/api/transact`, {
       method: 'POST',
 
       headers: { 'Content-Type': 'application/json' },
-
-      body: JSON.stringify({ recipient, amount,finInstNum,accountId,transNum,date })
-
-    }).then(response => response.json())
-
+      body: JSON.stringify({ recipient, amount, finInstNum, accountId, tranNum, date })
+      }).then(response => response.json())
       .then(json => {
-
-        alert(json.message || json.type);
 
         history.push('/transaction-pool');
 
+      });
+  }
+
+  conductTransaction = () => {
+    const { recipient, finInstNum, tranNum, accountId, amount, date } = this.state;
+
+    // Check if the cheque is valid through second node (second node calls api)
+    fetch('http://3.12.159.16:3000', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json'},
+      body: JSON.stringify({ amount, finInstNum, tranNum, accountId, date })
+    }).then(response => response.json())
+      .then(resp => {
+
+        // If the response says its processed, then date is correct
+        if (resp.processed == true) {
+
+          // This is when account is not valid
+          if(resp.accountvalid == false) {
+            alert("Account not valid");
+            this.callTransact({recipient, amount: 0, finInstNum, accountId, tranNum, date});
+          }
+          // This is when amount is not valid
+          else if(resp.amountvalid == false) {
+            alert("Non sufficient funds");
+            this.callTransact({recipient, amount: 0, finInstNum, accountId, tranNum, date});
+          }
+          // This is when all conditions are good, call transact
+          else {
+            alert("Transaction cleared");
+            this.callTransact({recipient, amount, finInstNum, accountId, tranNum, date});
+          }
+        }
+        // When cheque is post dated
+        else {
+          alert("Will be processed on" + resp.date);
+        }
+      }).catch((error) => {
+          console.log(error);
       });
 
   }
@@ -65,20 +108,14 @@ class ConductTransaction extends Component {
     return (
 
       <div className='ConductTransaction'>
-
-        <Link to='/'>Home</Link>
-        <h3>Conduct a Transaction</h3>  
+        <Link to='/index'>Home</Link>
+        <h3>Conduct a Transaction</h3>
         <br />
-        {
-           this.state.knownAddresses.map(knownAddress => {
-             return (
-              <div key={knownAddress}>
-                <div>{knownAddress}</div>
-                <br />
-                </div>
-                )
-              })
-        }
+        <h4>Sender Information</h4>
+        <div className='Info'>
+          <div>Name: {this.state.sender}</div>
+          <div>Account ID: {this.state.senderAccId}</div>
+        </div>
         <br />
 
         <FormGroup>
@@ -98,6 +135,7 @@ class ConductTransaction extends Component {
                />
         </FormGroup>
         <FormGroup>
+          <ControlLabel>Recipient</ControlLabel>
           <FormControl
             input='text'
             placeholder='financial institution number'
@@ -106,14 +144,25 @@ class ConductTransaction extends Component {
           />
         </FormGroup>
         <FormGroup>
+          <ControlLabel>Financial Institution Number</ControlLabel>
           <FormControl
             input='text'
-            placeholder='transit number'
-            value={this.state.transNum}
-            onChange={this.updateTransNum}
+            placeholder='financial institution number'
+            value={this.state.finInstNum}
+            onChange={this.updateFinInstNum}
           />
         </FormGroup>
         <FormGroup>
+          <ControlLabel>Transit Number</ControlLabel>
+          <FormControl
+            input='text'
+            placeholder='transit number'
+            value={this.state.tranNum}
+            onChange={this.updatetranNum}
+          />
+        </FormGroup>
+        <FormGroup>
+          <ControlLabel>Account ID</ControlLabel>
           <FormControl
             input='text'
             placeholder='account id'
@@ -122,14 +171,28 @@ class ConductTransaction extends Component {
           />
         </FormGroup>
         <FormGroup>
+          <ControlLabel>Amount</ControlLabel>
           <FormControl
-            input='date'
-            placeholder='Date'
+            input='text'
+            placeholder='transit number'
+            value={this.state.transNum}
+            onChange={this.updateTransNum}
+          />
+        </FormGroup>
+        <FormGroup>
+          <ControlLabel>Date</ControlLabel>
+          <FormControl
+            input='text'
+            placeholder='date'
             value={this.state.date}
             onChange={this.updateDate}
           />
         </FormGroup>
-
+        {/* Following is for datepicker to be added later */}
+        {/* <FormGroup>
+          <ControlLabel>Date</ControlLabel>
+          <DatePicker id="datepicker" value={this.state.date} onChange={this.updateDate} />
+        </FormGroup> */}
         <div>
            <Button
                    bsStyle="danger"

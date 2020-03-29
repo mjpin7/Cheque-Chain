@@ -1,24 +1,30 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo.jpg';
-import { FormGroup, FormControl, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import logo from '../assets/logo.png';
+import Cookies from 'universal-cookie'; 
+import history from '../history';  
+
+const cookies = new Cookies();
 
 class App extends Component {
-  state = { walletInfo: {} };
-
+  state = { walletInfo: {}, name: "", accountId: "" };
   componentDidMount() {
-    fetch('http://localhost:1234/api/wallet-info')
+    fetch(`${document.location.origin}/api/wallet-info`)
       .then(response => response.json())
       .then(json => this.setState({ walletInfo: json }));
+
+    this.setState({name: cookies.get('name'), accountId: cookies.get('accountId')});
   }
 
-  updatebanker = event => {
-
-    this.setState({ banker: event.target.value });
-
+  // Function to get rid of cookies that have been set and redirect user to login page (logout)
+  logout = () => {
+    cookies.remove('name');
+    cookies.remove('accountId');
+    history.push('/');
   }
 
-  render() {
+  render() {    
     const { address, balance } = this.state.walletInfo;
 
     return (
@@ -26,44 +32,23 @@ class App extends Component {
         <img className='logo' src={logo}></img>
         <br />
         <div>
-          Welcome to the ChequeClerance Network...
+          Welcome to Cheque Chain!
         </div>
         <br />
-        
-      
-    
-    
-    <FormGroup>
-
-    <FormControl
-
-      input='text'
-
-      placeholder='Banker-ID'
-
-      value={this.state.banker}
-
-      onChange={this.banker}
-      />
-
-      </FormGroup>
-      <div>
-
-      <Button
-
-        bsStyle="danger"
-
-        onClick={this.App}
-
-      >
-
-        Submit
-
-      </Button>
-
-    </div>
-    <div><Link to='/blocks'>Blocks</Link></div>
-        <div><Link to='/conduct-transaction'>Enter Cheque Info </Link></div>
+        <div><Link to='/blocks'>Blocks</Link></div>
+        <div><Link to='/conduct-transaction'>Conduct a Transaction</Link></div>
+        <div><Link to='/transaction-pool'>Transaction Pool</Link></div>
+        <div>
+          <Button
+            bsStyle="danger"
+            onClick={this.logout}
+          >Logout</Button>
+        </div>
+        <br /><br/><br/>
+        <div className='Info'>
+          <div>Name: {this.state.name}</div>
+          <div>Address: {address}</div>
+          <div>Account ID: {this.state.accountId}</div>
         </div>
     );
         //<div><Link to='/transaction-pool'>Transaction Pool</Link></div>
@@ -71,10 +56,13 @@ class App extends Component {
         //<div className='WalletInfo'>
          // <div>Address: {address}</div>
           //<div>Balance: {balance}</div>
-        //</div>
+        </div>
    }
 
   
 }
+
+
+
 
 export default App;
